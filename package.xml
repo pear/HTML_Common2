@@ -26,8 +26,8 @@ The HTML_Common2 package provides methods for HTML code display and attributes h
     </maintainer>
   </maintainers>
   <release>
-    <version>2.0.0dev1</version>
-    <date>2004-??-??</date>
+    <version>0.1.0</version>
+    <date>2004-10-27</date>
     <license>PHP License</license>
     <state>dev</state>
     <notes>

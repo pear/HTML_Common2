@@ -229,7 +229,7 @@ abstract class HTML_Common2
     *
     * @param    mixed   Array of attribute 'name' => 'value' pairs or HTML attribute string
     */
-    public function updateAttributes($attributes)
+    public function mergeAttributes($attributes)
     {
         $this->_attributes = array_merge($this->_attributes, self::parseAttributes($attributes));
     }

@@ -54,7 +54,7 @@ class HTML_Common2_Test extends PHPUnit2_Framework_TestCase
         $obj = new HTML_Common2_Concrete();
         $obj->setAttributes(array('BAZ' => 'quux'));
         $obj->setAttribute('Foo', 'bar');
-        $obj->updateAttributes(array('XyZZy' => 'xyzzy value'));
+        $obj->mergeAttributes(array('XyZZy' => 'xyzzy value'));
 
         $this->assertEquals('bar', $obj->getAttribute('FOO'));
 
@@ -100,7 +100,7 @@ class HTML_Common2_Test extends PHPUnit2_Framework_TestCase
     {
         $obj = new HTML_Common2_Concrete(array('multiple'));
         $obj->setAttribute('selected');
-        $obj->updateAttributes('checked nowrap');
+        $obj->mergeAttributes('checked nowrap');
         $this->assertEquals(
             array('multiple' => 'multiple', 'selected' => 'selected', 
                   'checked' => 'checked', 'nowrap' => 'nowrap'),
