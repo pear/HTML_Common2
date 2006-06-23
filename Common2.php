@@ -11,7 +11,7 @@
  * @category   HTML
  * @package    HTML_Common2
  * @author     Alexey Borzov <avb@php.net>
- * @copyright  2004 The PHP Group
+ * @copyright  2004, 2005, 2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/HTML_Common2
@@ -33,7 +33,15 @@ abstract class HTML_Common2
     * Associative array of attributes
     * @var array
     */
-    private $_attributes = array();
+    protected $attributes = array();
+
+   /**
+    * List of attribites changes to which will be announced via onAttributeChange()
+    * method rather than performed by HTML_Common2 class itself 
+    * @var array
+    * @see onAttributeChange()
+    */
+    protected $watchedAttributes = array();
 
    /**
     * Indentation level of the element
@@ -90,44 +98,59 @@ abstract class HTML_Common2
     }
 
    /**
+    * Parses the HTML attributes given as string
+    *
+    * @param    string  HTML attribute string
+    * @return   array   An associative aray of attributes
+    */
+    protected static function parseAttributes($attrString)
+    {
+        $attributes = array();
+        if (preg_match_all(
+                "/(([A-Za-z_:]|[^\\x00-\\x7F])([A-Za-z0-9_:.-]|[^\\x00-\\x7F])*)" .
+                "([ \\n\\t\\r]+)?(=([ \\n\\t\\r]+)?(\"[^\"]*\"|'[^']*'|[^ \\n\\t\\r]*))?/", 
+                $attrString, 
+                $regs
+           )) {
+            for ($i = 0; $i < count($regs[1]); $i++) {
+                $name  = trim($regs[1][$i]);
+                $check = trim($regs[0][$i]);
+                $value = trim($regs[7][$i]);
+                if ($name == $check) {
+                    $attributes[strtolower($name)] = strtolower($name);
+                } else {
+                    if (!empty($value) && ($value[0] == '\'' || $value[0] == '"')) {
+                        $value = substr($value, 1, -1);
+                    }
+                    $attributes[strtolower($name)] = $value;
+                }
+            }
+        }
+        return $attributes;
+    }
+
+   /**
     * Creates a valid attribute array from either a string or an array
     *
     * @param    mixed   Array of attributes or HTML attribute string
     * @return   array   An associative aray of attributes
     */
-    protected static function parseAttributes($attributes)
+    protected static function prepareAttributes($attributes)
     {
-        $ret = array();
-        if (is_array($attributes)) {
+        $prepared = array();
+        if (is_string($attributes)) {
+            $prepared = self::parseAttributes($attributes);
+        } elseif (is_array($attributes)) {
             foreach ($attributes as $key => $value) {
                 if (is_int($key)) {
                     $key = $value = strtolower($value);
                 } else {
                     $key = strtolower($key);
                 }
-                $ret[$key] = $value;
-            }
-
-        } elseif (is_string($attributes)) {
-            $preg = "/(([A-Za-z_:]|[^\\x00-\\x7F])([A-Za-z0-9_:.-]|[^\\x00-\\x7F])*)" .
-                "([ \\n\\t\\r]+)?(=([ \\n\\t\\r]+)?(\"[^\"]*\"|'[^']*'|[^ \\n\\t\\r]*))?/";
-            if (preg_match_all($preg, $attributes, $regs)) {
-                for ($i = 0; $i < count($regs[1]); $i++) {
-                    $name  = trim($regs[1][$i]);
-                    $check = trim($regs[0][$i]);
-                    $value = trim($regs[7][$i]);
-                    if ($name == $check) {
-                        $ret[strtolower($name)] = strtolower($name);
-                    } else {
-                        if (!empty($value) && ($value{0} == '\'' || $value{0} == '"')) {
-                            $value = substr($value, 1, -1);
-                        }
-                        $ret[strtolower($name)] = $value;
-                    }
-                }
+                $prepared[$key] = (string)$value;
             }
         }
-        return $ret;
+        return $prepared;
     }
 
    /**
@@ -169,7 +192,7 @@ abstract class HTML_Common2
     */
     public function __construct($attributes = null)
     {
-        $this->setAttributes($attributes);
+        $this->mergeAttributes($attributes);
     }
 
    /**
@@ -184,7 +207,11 @@ abstract class HTML_Common2
         if (is_null($value)) {
             $value = $name;
         }
-        $this->_attributes[$name] = $value;
+        if (in_array($name, $this->watchedAttributes)) {
+            $this->onAttributeChange($name, $value);
+        } else {
+            $this->attributes[$name] = $value;
+        }
     }
 
    /**
@@ -196,7 +223,7 @@ abstract class HTML_Common2
     public function getAttribute($name)
     {
         $name = strtolower($name);
-        return isset($this->_attributes[$name])? $this->_attributes[$name]: null;
+        return isset($this->attributes[$name])? $this->attributes[$name]: null;
     }
 
    /**
@@ -206,7 +233,20 @@ abstract class HTML_Common2
     */
     public function setAttributes($attributes)
     {
-        $this->_attributes = self::parseAttributes($attributes);
+        $attributes = self::prepareAttributes($attributes);
+        $watched    = array();
+        foreach ($this->watchedAttributes as $watchedKey) {
+            if (isset($attributes[$watchedKey])) {
+                $this->setAttribute($watchedKey, $attributes[$watchedKey]);
+                unset($attributes[$watchedKey]);
+            } else {
+                $this->removeAttribute($watchedKey);
+            }
+            if (isset($this->attributes[$watchedKey])) {
+                $watched[$watchedKey] = $this->attributes[$watchedKey]; 
+            }
+        }
+        $this->attributes = array_merge($watched, $attributes);
     }
 
    /**
@@ -218,9 +258,9 @@ abstract class HTML_Common2
     public function getAttributes($asString = false)
     {
         if ($asString) {
-            return self::getAttributesString($this->_attributes);
+            return self::getAttributesString($this->attributes);
         } else {
-            return $this->_attributes;
+            return $this->attributes;
         }
     }
 
@@ -231,7 +271,14 @@ abstract class HTML_Common2
     */
     public function mergeAttributes($attributes)
     {
-        $this->_attributes = array_merge($this->_attributes, self::parseAttributes($attributes));
+        $attributes = self::prepareAttributes($attributes);
+        foreach ($this->watchedAttributes as $watchedKey) {
+            if (isset($attributes[$watchedKey])) {
+                $this->onAttributeChange($watchedKey, $attributes[$watchedKey]);
+                unset($attributes[$watchedKey]);
+            }
+        }
+        $this->attributes = array_merge($this->attributes, $attributes);
     }
 
    /**
@@ -241,7 +288,11 @@ abstract class HTML_Common2
     */
     public function removeAttribute($attribute)
     {
-        self::removeAttributeArray($this->_attributes, $attribute);
+        if (in_array(strtolower($attribute), $this->watchedAttributes)) {
+            $this->onAttributeChange(strtolower($attribute), null);
+        } else {
+            self::removeAttributeArray($this->attributes, $attribute);
+        }
     }
 
    /**
@@ -305,11 +356,41 @@ abstract class HTML_Common2
     abstract public function toHtml();
 
    /**
+    * A magic method to let the object work with echo and print constructs
+    *
+    * @return string
+    * @see toHtml()
+    */
+    public function __toString()
+    {
+        return $this->toHtml();
+    }
+
+   /**
     * Displays the element
+    *
+    * @deprecated   Deprecated, using <code>echo $obj;</code> will work just as well
     */
     public function display()
     {
         echo $this->toHtml();
+    }
+
+   /**
+    * Called if trying to change an attribute with name in $watchedAttributes
+    *
+    * This method is called for each attribute whose name is in the
+    * $watchedAttributes array and which is being changed by setAttribute(),
+    * setAttributes() or mergeAttributes() or removed via removeAttribute().
+    * Note that the operation for the attribute is not carried on after calling
+    * this method, it is the responsibility of this method to change or remove
+    * (or not) the attribute.   
+    *
+    * @param    string  Attribute name
+    * @param    string  Attribute value, null if attribute is being removed
+    */
+    protected function onAttributeChange($name, $value = null)
+    {
     }
 }
 ?>

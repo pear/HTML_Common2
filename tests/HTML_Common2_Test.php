@@ -13,12 +13,36 @@ if (!defined('PHPUnit2_MAIN_METHOD')) {
 require_once 'PHPUnit2/Framework/TestCase.php';
 require_once 'HTML/Common2.php';
 
-// HTML_Common2 cannot be instantiated due to abstract toHtml()
+// HTML_Common2 cannot be instantiated directly
 class HTML_Common2_Concrete extends HTML_Common2
 {
     public function toHtml()
     {
         return '';
+    }
+}
+
+class HTML_Common2_WatchedAttributes extends HTML_Common2_Concrete
+{
+    protected $watchedAttributes = array('readonly', 'uppercase');
+
+    protected $attributes = array(
+        'readonly'  => 'this attribute is readonly',
+        'uppercase' => 'VALUE OF THIS IS ALWAYS UPPERCASE'
+    );
+
+    protected function onAttributeChange($name, $value = null)
+    {
+        if ('readonly' == $name) {
+            return;
+        }
+        if ('uppercase' == $name) {
+            if (null === $value) {
+                unset($this->attributes[$name]);
+            } else {
+                $this->attributes[$name] = strtoupper($value);
+            }
+        }
     }
 }
 
@@ -114,6 +138,39 @@ class HTML_Common2_Test extends PHPUnit2_Framework_TestCase
         $this->assertEquals(
             ' foo="bar&amp;&quot;baz&quot;" quux="xyz&#039;zy"',
             $obj->getAttributes(true)
+        );
+    }
+
+    public function testCanWatchAttributes()
+    {
+        $obj = new HTML_Common2_WatchedAttributes();
+
+        $obj->setAttributes(array('readonly' => 'something', 'uppercase' => 'new value', 'foo' => 'bar'));
+        $this->assertEquals(
+            array('readonly' => 'this attribute is readonly', 'uppercase' => 'NEW VALUE', 'foo' => 'bar'),
+            $obj->getAttributes()
+        );
+
+        $obj->mergeAttributes(array('readonly' => 'something', 'uppercase' => 'other value', 'foo' => 'baz'));
+        $this->assertEquals(
+            array('readonly' => 'this attribute is readonly', 'uppercase' => 'OTHER VALUE', 'foo' => 'baz'),
+            $obj->getAttributes()
+        );
+
+        $obj->setAttribute('readonly', 'something else');
+        $obj->setAttribute('uppercase', 'yet another value');
+        $obj->setAttribute('foo', 'quux');
+        $this->assertEquals(
+            array('readonly' => 'this attribute is readonly', 'uppercase' => 'YET ANOTHER VALUE', 'foo' => 'quux'),
+            $obj->getAttributes()
+        );
+
+        $obj->removeAttribute('readonly');
+        $obj->removeAttribute('uppercase');
+        $obj->removeAttribute('foo');
+        $this->assertEquals(
+            array('readonly' => 'this attribute is readonly'),
+            $obj->getAttributes()
         );
     }
 }
