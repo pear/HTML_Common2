@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
-<package version="1.0">
+<package xmlns="http://pear.php.net/dtd/package-1.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://pear.php.net/dtd/package-1.0 http://pear.php.net/dtd/package-1.0.xsd"
+		 version="1.0">
   <name>HTML_Common2</name>
   <summary>Abstract base class for HTML classes (PHP5 port of HTML_Common package).</summary>
   <description>
@@ -26,13 +28,25 @@ The HTML_Common2 package provides methods for HTML code display and attributes h
     </maintainer>
   </maintainers>
   <release>
-    <version>0.1.0</version>
-    <date>2004-10-27</date>
+    <version>0.2.0</version>
+    <date>2006-07-03</date>
     <license>PHP License</license>
     <state>devel</state>
     <notes>
-First release of a new major version.
+* $attributes array is now protected rather than private (and thus renamed
+  from $_attributes)
+* parseAttributes() was renamed to prepareAttributes(), string parsing logic
+  was extracted into the new parseAttributes() method
+* Added magic __toString() method as an alias for toHtml(), deprecated
+  display(): it is now possible to print an instance of HTML_Common2 subclass
+  by simply using the 'echo $object;'
+* It is now possible to watch some attributes for changes, this can be used to
+  - Make attributes read-only (like 'type' attribute of &lt;input /&gt; tag)
+  - Do some custom processing (update the element's value if its name changes)
     </notes>
+    <deps>
+      <dep type="php" rel="ge" version="5.0.0"/>
+    </deps>
     <filelist>
       <dir name="/" baseinstalldir="HTML">
         <file role="php" name="Common2.php"/>
@@ -41,8 +55,16 @@ First release of a new major version.
         </dir>
       </dir>
     </filelist>
-    <deps>
-      <dep type="php" rel="ge" version="5.0.0"/>
-    </deps>
   </release>
+  <changelog>
+    <release>
+    <version>0.1.0</version>
+    <date>2004-10-27</date>
+    <license>PHP License</license>
+    <state>devel</state>
+    <notes>
+First release of a new major version.
+    </notes>
+    </release>
+  </changelog>
 </package>
