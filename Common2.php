@@ -6,7 +6,7 @@
  *
  * LICENSE:
  * 
- * Copyright (c) 2004-2006, Alexey Borzov <avb@php.net>
+ * Copyright (c) 2004-2007, Alexey Borzov <avb@php.net>
  *  
  * All rights reserved.
  *
@@ -226,6 +226,7 @@ abstract class HTML_Common2
     * 
     * @param    string  Attribute name
     * @param    string  Attribute value (will be set to $name if omitted)
+    * @return   HTML_Common2
     */
     public function setAttribute($name, $value = null)
     {
@@ -238,6 +239,7 @@ abstract class HTML_Common2
         } else {
             $this->attributes[$name] = (string)$value;
         }
+        return $this;
     }
 
    /**
@@ -256,6 +258,7 @@ abstract class HTML_Common2
     * Sets the attributes 
     *
     * @param    mixed   Array of attribute 'name' => 'value' pairs or HTML attribute string
+    * @return   HTML_Common2
     */
     public function setAttributes($attributes)
     {
@@ -273,6 +276,7 @@ abstract class HTML_Common2
             }
         }
         $this->attributes = array_merge($watched, $attributes);
+        return $this;
     }
 
    /**
@@ -294,6 +298,7 @@ abstract class HTML_Common2
     * Merges the existing attributes with the new ones
     *
     * @param    mixed   Array of attribute 'name' => 'value' pairs or HTML attribute string
+    * @return   HTML_Common2
     */
     public function mergeAttributes($attributes)
     {
@@ -305,12 +310,14 @@ abstract class HTML_Common2
             }
         }
         $this->attributes = array_merge($this->attributes, $attributes);
+        return $this;
     }
 
    /**
     * Removes an attribute
     *
     * @param    string  Name of attribute to remove
+    * @return   HTML_Common2
     */
     public function removeAttribute($attribute)
     {
@@ -319,12 +326,14 @@ abstract class HTML_Common2
         } else {
             self::removeAttributeArray($this->attributes, $attribute);
         }
+        return $this;
     }
 
    /**
     * Sets the indentation level
     *
     * @param    int
+    * @return   HTML_Common2
     */
     public function setIndentLevel($level)
     {
@@ -332,6 +341,7 @@ abstract class HTML_Common2
         if (0 <= $level) {
             $this->_indentLevel = $level;
         }
+        return $this;
     }
 
    /**
@@ -358,10 +368,12 @@ abstract class HTML_Common2
     * Sets the comment for the element
     * 
     * @param    string
+    * @return   HTML_Common2
     */
     public function setComment($comment)
     {
         $this->_comment = $comment;
+        return $this;
     }
 
    /**

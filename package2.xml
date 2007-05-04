@@ -27,26 +27,22 @@ The HTML_Common2 package provides methods for HTML code display and attributes h
     <email>thesaur@php.net</email>
     <active>no</active>
   </lead>
-  <date>2006-10-16</date>
+  <date>2007-05-04</date>
   <version>
-    <release>0.3.0</release>
-    <api>0.3.0</api>
+    <release>2.0.0beta1</release>
+    <api>2.0.0beta1</api>
   </version>
   <stability>
-    <release>alpha</release>
-    <api>alpha</api>
+    <release>beta</release>
+    <api>beta</api>
   </stability>
   <license uri="http://opensource.org/licenses/bsd-license.php">BSD License</license>
   <notes>
-Radical changes to API are not expected after this release, you may use the 
-package for development.
-
-Changes:
-* Renamed 'encoding' option to 'charset', as htmlspecialchars() parameter is named
-* Removed toHtml() and display() methods, __toString() is now declared abstract
-* Attribute values are always converted to strings
-* Minor performance tweaks
-* Switched to BSD license and package.xml 2.0 
+* Use phpunit/PHPUnit rather than pear/PHPUnit2 for unit testing needs
+* &quot;Fuent interfaces&quot;: all methods that didn&apos;t return anything now
+  return $this. The following methods are affected: mergeAttributes(),
+  removeAttribute(), setAttribute(), setAttributes(), setComment() and
+  setIndentLevel().
   </notes>
   <contents>
     <dir name="/">
@@ -61,7 +57,7 @@ Changes:
   <dependencies>
     <required>
       <php>
-        <min>5.1.0</min>
+        <min>5.1.4</min>
       </php>
       <pearinstaller>
         <min>1.4.0</min>
@@ -70,6 +66,30 @@ Changes:
   </dependencies>
   <phprelease />
   <changelog>
+
+  <release>
+    <version>
+      <release>0.3.0</release>
+      <api>0.3.0</api>
+    </version>
+    <stability>
+      <release>alpha</release>
+      <api>alpha</api>
+    </stability>
+    <date>2006-10-16</date>
+    <license uri="http://opensource.org/licenses/bsd-license.php">BSD License</license>
+    <notes>
+Radical changes to API are not expected after this release, you may use the 
+package for development.
+
+Changes:
+* Renamed 'encoding' option to 'charset', as htmlspecialchars() parameter is named
+* Removed toHtml() and display() methods, __toString() is now declared abstract
+* Attribute values are always converted to strings
+* Minor performance tweaks
+* Switched to BSD license and package.xml 2.0 
+    </notes>
+  </release>
 
   <release>
     <version>

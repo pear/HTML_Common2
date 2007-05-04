@@ -6,7 +6,7 @@
  *
  * LICENSE:
  * 
- * Copyright (c) 2004-2006, Alexey Borzov <avb@php.net>
+ * Copyright (c) 2004-2007, Alexey Borzov <avb@php.net>
  *  
  * All rights reserved.
  *
@@ -42,14 +42,14 @@
  * @link       http://pear.php.net/package/HTML_Common2
  */
 
-if (!defined('PHPUnit2_MAIN_METHOD')) {
-    define('PHPUnit2_MAIN_METHOD', 'this is getting ridiculous');
+if (!defined('PHPUnit_MAIN_METHOD')) {
+    define('PHPUnit_MAIN_METHOD', 'HTML_Common2_Test::main');
 }
 
 /**
- * PHPUnit2 Test Case  
+ * PHPUnit Test Case  
  */
-require_once 'PHPUnit2/Framework/TestCase.php';
+require_once 'PHPUnit/Framework/TestCase.php';
 
 /**
  * HTML_Common2 class
@@ -105,8 +105,18 @@ class HTML_Common2_WatchedAttributes extends HTML_Common2_Concrete
 /**
  * Unit test for HTML_Common2 class
  */
-class HTML_Common2_Test extends PHPUnit2_Framework_TestCase
+class HTML_Common2_Test extends PHPUnit_Framework_TestCase
 {
+    public static function main()
+    {
+        require_once 'PHPUnit/Framework/TestSuite.php';
+        require_once 'PHPUnit/TextUI/TestRunner.php';
+
+        PHPUnit_TextUI_TestRunner::run(
+            new PHPUnit_Framework_TestSuite('HTML_Common2_Test')
+        );
+    }
+
     public function testUnknownOptionIsNull()
     {
         $this->assertNull(HTML_Common2::getOption('foobar'));
@@ -243,11 +253,21 @@ class HTML_Common2_Test extends PHPUnit2_Framework_TestCase
             $obj->getAttributes()
         );
     }
+
+    public function testFluentInterfaces()
+    {
+        $obj = new HTML_Common2_Concrete();
+
+        $this->assertSame($obj, $obj->setAttributes(array('foo' => 'foo value')));
+        $this->assertSame($obj, $obj->mergeAttributes(array('bar' => 'bar value')));
+        $this->assertSame($obj, $obj->setAttribute('baz', 'baz value'));
+        $this->assertSame($obj, $obj->removeAttribute('bar'));
+        $this->assertSame($obj, $obj->setComment('A comment'));
+        $this->assertSame($obj, $obj->setIndentLevel(3));
+    }
 }
 
-require_once 'PHPUnit2/Framework/TestSuite.php';
-require_once 'PHPUnit2/TextUI/TestRunner.php';
-
-$suite  = new PHPUnit2_Framework_TestSuite('HTML_Common2_Test');
-$result = PHPUnit2_TextUI_TestRunner::run($suite);
+if (PHPUnit_MAIN_METHOD == 'HTML_Common2_Test::main') {
+    HTML_Common2_Test::main();
+}
 ?>
