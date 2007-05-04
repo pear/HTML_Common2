@@ -39,7 +39,7 @@ The HTML_Common2 package provides methods for HTML code display and attributes h
   <license uri="http://opensource.org/licenses/bsd-license.php">BSD License</license>
   <notes>
 * Use phpunit/PHPUnit rather than pear/PHPUnit2 for unit testing needs
-* &quot;Fuent interfaces&quot;: all methods that didn&apos;t return anything now
+* &quot;Fluent interfaces&quot;: all methods that didn&apos;t return anything now
   return $this. The following methods are affected: mergeAttributes(),
   removeAttribute(), setAttribute(), setAttributes(), setComment() and
   setIndentLevel().
