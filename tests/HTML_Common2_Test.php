@@ -42,10 +42,6 @@
  * @link       http://pear.php.net/package/HTML_Common2
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'HTML_Common2_Test::main');
-}
-
 /**
  * PHPUnit Test Case  
  */
@@ -265,9 +261,5 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
         $this->assertSame($obj, $obj->setComment('A comment'));
         $this->assertSame($obj, $obj->setIndentLevel(3));
     }
-}
-
-if (PHPUnit_MAIN_METHOD == 'HTML_Common2_Test::main') {
-    HTML_Common2_Test::main();
 }
 ?>
