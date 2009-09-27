@@ -29,8 +29,8 @@ HTML_Common2 package provides methods for HTML code display and attributes handl
   </lead>
   <date>2009-09-27</date>
   <version>
-    <release>2.0.0rc1</release>
-    <api>2.0.0rc1</api>
+    <release>2.0.0RC1</release>
+    <api>2.0.0RC1</api>
   </version>
   <stability>
     <release>beta</release>
