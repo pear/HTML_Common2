@@ -5,9 +5,9 @@
  * PHP version 5
  *
  * LICENSE:
- * 
- * Copyright (c) 2004-2007, Alexey Borzov <avb@php.net>
- *  
+ *
+ * Copyright (c) 2004-2009, Alexey Borzov <avb@php.net>
+ *
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -17,9 +17,9 @@
  *    * Redistributions of source code must retain the above copyright
  *      notice, this list of conditions and the following disclaimer.
  *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the 
+ *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
- *    * The names of the authors may not be used to endorse or promote products 
+ *    * The names of the authors may not be used to endorse or promote products
  *      derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
@@ -43,7 +43,7 @@
  */
 
 /**
- * PHPUnit Test Case  
+ * PHPUnit Test Case
  */
 require_once 'PHPUnit/Framework/TestCase.php';
 
@@ -53,7 +53,7 @@ require_once 'PHPUnit/Framework/TestCase.php';
 require_once 'HTML/Common2.php';
 
 /**
- * A non-abstract subclass of HTML_Common2 
+ * A non-abstract subclass of HTML_Common2
  *
  * HTML_Common2 cannot be instantiated due to abstract __toString() method,
  * we need to (sort of) implement that.
@@ -67,12 +67,12 @@ class HTML_Common2_Concrete extends HTML_Common2
 }
 
 /**
- * A subclass to test the 'watched attributes' functionality of HTML_Common2 
+ * A subclass to test the 'watched attributes' functionality of HTML_Common2
  *
  * Two attributes are watched here: 'readonly' and 'uppercase'. The former
  * should not be changed by any of the methods and the value of the latter
  * should always be uppercase. This is achieved by implementing the
- * onAttributeChange() method defined in HTML_Common2  
+ * onAttributeChange() method defined in HTML_Common2
  */
 class HTML_Common2_WatchedAttributes extends HTML_Common2_Concrete
 {
@@ -103,16 +103,6 @@ class HTML_Common2_WatchedAttributes extends HTML_Common2_Concrete
  */
 class HTML_Common2_Test extends PHPUnit_Framework_TestCase
 {
-    public static function main()
-    {
-        require_once 'PHPUnit/Framework/TestSuite.php';
-        require_once 'PHPUnit/TextUI/TestRunner.php';
-
-        PHPUnit_TextUI_TestRunner::run(
-            new PHPUnit_Framework_TestSuite('HTML_Common2_Test')
-        );
-    }
-
     public function testUnknownOptionIsNull()
     {
         $this->assertNull(HTML_Common2::getOption('foobar'));
@@ -122,6 +112,16 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
     {
         HTML_Common2::setOption('foobar', 'baz');
         $this->assertEquals('baz', HTML_Common2::getOption('foobar'));
+    }
+
+    public function testArrayOfOptionsAllowed()
+    {
+        HTML_Common2::setOption(array(
+            'quux' => 'xyzzy'
+        ));
+        $this->assertEquals('xyzzy', HTML_Common2::getOption('quux'));
+
+        $this->assertArrayHasKey('charset', HTML_Common2::getOption());
     }
 
     public function testConstructorSetsDefaultAttributes()
@@ -149,7 +149,7 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
 
         $obj->removeAttribute('fOO');
         $this->assertEquals(
-            array('baz' => 'quux', 'xyzzy' => 'xyzzy value'), 
+            array('baz' => 'quux', 'xyzzy' => 'xyzzy value'),
             $obj->getAttributes()
         );
     }
@@ -190,8 +190,8 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
     {
         $obj = new HTML_Common2_Concrete('multiple  style= "height: 2em;" class=\'foo\' width=100% ');
         $this->assertEquals(
-            array('multiple' => 'multiple', 'style' => 'height: 2em;', 
-                  'class' => 'foo', 'width' => '100%'), 
+            array('multiple' => 'multiple', 'style' => 'height: 2em;',
+                  'class' => 'foo', 'width' => '100%'),
             $obj->getAttributes()
         );
     }
@@ -202,7 +202,7 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
         $obj->setAttribute('selected');
         $obj->mergeAttributes('checked nowrap');
         $this->assertEquals(
-            array('multiple' => 'multiple', 'selected' => 'selected', 
+            array('multiple' => 'multiple', 'selected' => 'selected',
                   'checked' => 'checked', 'nowrap' => 'nowrap'),
             $obj->getAttributes()
         );
@@ -260,6 +260,37 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
         $this->assertSame($obj, $obj->removeAttribute('bar'));
         $this->assertSame($obj, $obj->setComment('A comment'));
         $this->assertSame($obj, $obj->setIndentLevel(3));
+    }
+
+    public function testCanAddCssClasses()
+    {
+        $obj = new HTML_Common2_Concrete();
+
+        $obj->addClass('foobar');
+        $obj->addClass('foobar');
+        $this->assertEquals('foobar', $obj->getAttribute('class'));
+
+        $obj->addClass('quux xyzzy');
+        $this->assertFalse($obj->hasClass('bar'));
+        $this->assertTrue($obj->hasClass('foobar'));
+        $this->assertTrue($obj->hasClass('quux'));
+        $this->assertTrue($obj->hasClass('xyzzy'));
+
+        $obj->addClass(array('newclass'));
+        $this->assertTrue($obj->hasClass('newclass'));
+    }
+
+    public function testCanRemoveCssClasses()
+    {
+        $obj = new HTML_Common2_Concrete(array('class' => 'foobar quux xyzzy'));
+
+        $obj->removeClass('foobar xyzzy');
+        $this->assertFalse($obj->hasClass('xyzzy'));
+        $this->assertFalse($obj->hasClass('foobar'));
+        $this->assertTrue($obj->hasClass('quux'));
+
+        $obj->removeClass(array('quux'));
+        $this->assertEquals(null, $obj->getAttribute('class'));
     }
 }
 ?>

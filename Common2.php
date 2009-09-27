@@ -5,9 +5,9 @@
  * PHP version 5
  *
  * LICENSE:
- * 
- * Copyright (c) 2004-2007, Alexey Borzov <avb@php.net>
- *  
+ *
+ * Copyright (c) 2004-2009, Alexey Borzov <avb@php.net>
+ *
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -17,9 +17,9 @@
  *    * Redistributions of source code must retain the above copyright
  *      notice, this list of conditions and the following disclaimer.
  *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the 
+ *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
- *    * The names of the authors may not be used to endorse or promote products 
+ *    * The names of the authors may not be used to endorse or promote products
  *      derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
@@ -44,11 +44,11 @@
 
 /**
  * Base class for HTML classes
- * 
+ *
  * Implements methods for working with HTML attributes, parsing and generating
- * attribute strings. Port of HTML_Common class for PHP4 originally written by 
+ * attribute strings. Port of HTML_Common class for PHP4 originally written by
  * Adam Daniel with contributions from numerous other developers.
- * 
+ *
  * @category   HTML
  * @package    HTML_Common2
  * @author     Alexey Borzov <avb@php.net>
@@ -64,7 +64,7 @@ abstract class HTML_Common2
 
    /**
     * List of attribites changes to which will be announced via onAttributeChange()
-    * method rather than performed by HTML_Common2 class itself 
+    * method rather than performed by HTML_Common2 class itself
     * @var array
     * @see onAttributeChange()
     */
@@ -77,7 +77,7 @@ abstract class HTML_Common2
     private $_indentLevel = 0;
 
    /**
-    * Comment associated with the element  
+    * Comment associated with the element
     * @var string
     */
     private $_comment = null;
@@ -100,29 +100,40 @@ abstract class HTML_Common2
     );
 
    /**
-    * Sets a global option
-    * 
-    * @param    string  Option name
-    * @param    mixed   Option value
+    * Sets global option(s)
+    *
+    * @param    string|array    Option name or array ('option name' => 'option value')
+    * @param    mixed           Option value, if first argument is not an array
     */
-    public static function setOption($name, $value)
+    public static function setOption($nameOrOptions, $value = null)
     {
-        $linebreaks = array('win' => "\15\12", 'unix' => "\12", 'mac' => "\15");
-        if ('linebreak' == $name && isset($linebreaks[$value])) {
-            $value = $linebreaks[$value];
+        if (is_array($nameOrOptions)) {
+            foreach ($nameOrOptions as $k => $v) {
+                self::setOption($k, $v);
+            }
+        } else {
+            $linebreaks = array('win' => "\15\12", 'unix' => "\12", 'mac' => "\15");
+            if ('linebreak' == $nameOrOptions && isset($linebreaks[$value])) {
+                $value = $linebreaks[$value];
+            }
+            self::$_options[$nameOrOptions] = $value;
         }
-        self::$_options[$name] = $value;
     }
 
    /**
-    * Gets a global option
+    * Returns global option(s)
     *
     * @param    string  Option name
-    * @return   mixed   Option value, null if option does not exist
+    * @return   mixed   Option value, null if option does not exist,
+    *                   array of all options if $name is not given
     */
-    public static function getOption($name)
+    public static function getOption($name = null)
     {
-        return isset(self::$_options[$name])? self::$_options[$name]: null;
+        if (null === $name) {
+            return self::$_options;
+        } else {
+            return isset(self::$_options[$name])? self::$_options[$name]: null;
+        }
     }
 
    /**
@@ -136,8 +147,8 @@ abstract class HTML_Common2
         $attributes = array();
         if (preg_match_all(
                 "/(([A-Za-z_:]|[^\\x00-\\x7F])([A-Za-z0-9_:.-]|[^\\x00-\\x7F])*)" .
-                "([ \\n\\t\\r]+)?(=([ \\n\\t\\r]+)?(\"[^\"]*\"|'[^']*'|[^ \\n\\t\\r]*))?/", 
-                $attrString, 
+                "([ \\n\\t\\r]+)?(=([ \\n\\t\\r]+)?(\"[^\"]*\"|'[^']*'|[^ \\n\\t\\r]*))?/",
+                $attrString,
                 $regs
            )) {
             for ($i = 0; $i < count($regs[1]); $i++) {
@@ -184,7 +195,7 @@ abstract class HTML_Common2
 
    /**
     * Removes an attribute from an attribute array
-    * 
+    *
     * @param    array   Attribute array
     * @param    string  Name of attribute to remove
     */
@@ -195,7 +206,7 @@ abstract class HTML_Common2
 
    /**
     * Creates HTML attribute string from array
-    * 
+    *
     * @param    array   Attribute array
     * @return   string  Attribute string
     */
@@ -213,7 +224,7 @@ abstract class HTML_Common2
 
    /**
     * Class constructor, sets default attributes
-    * 
+    *
     * @param    mixed   Array of attribute 'name' => 'value' pairs or HTML attribute string
     */
     public function __construct($attributes = null)
@@ -223,7 +234,7 @@ abstract class HTML_Common2
 
    /**
     * Sets the value of the attribute
-    * 
+    *
     * @param    string  Attribute name
     * @param    string  Attribute value (will be set to $name if omitted)
     * @return   HTML_Common2
@@ -255,7 +266,7 @@ abstract class HTML_Common2
     }
 
    /**
-    * Sets the attributes 
+    * Sets the attributes
     *
     * @param    mixed   Array of attribute 'name' => 'value' pairs or HTML attribute string
     * @return   HTML_Common2
@@ -272,7 +283,7 @@ abstract class HTML_Common2
                 $this->removeAttribute($watchedKey);
             }
             if (isset($this->attributes[$watchedKey])) {
-                $watched[$watchedKey] = $this->attributes[$watchedKey]; 
+                $watched[$watchedKey] = $this->attributes[$watchedKey];
             }
         }
         $this->attributes = array_merge($watched, $attributes);
@@ -281,7 +292,7 @@ abstract class HTML_Common2
 
    /**
     * Returns the attribute array or string
-    * 
+    *
     * @param    bool    Whether to return attributes as string
     * @return   mixed   Either an array or string of attributes
     */
@@ -366,7 +377,7 @@ abstract class HTML_Common2
 
    /**
     * Sets the comment for the element
-    * 
+    *
     * @param    string
     * @return   HTML_Common2
     */
@@ -387,6 +398,67 @@ abstract class HTML_Common2
     }
 
    /**
+    * Checks whether the element has given CSS class
+    *
+    * @param    string  Class name
+    * @return   bool
+    */
+    public function hasClass($class)
+    {
+        $regex = '/(^|\s)' . preg_quote($class, '/') . '(\s|$)/';
+        return (bool)preg_match($regex, $this->getAttribute('class'));
+    }
+
+   /**
+    * Adds the given CSS class(es) to the element
+    *
+    * @param    string|array    Class name, multiple class names separated by
+    *                           whitespace, array of class names
+    * @return   HTML_Common2
+    */
+    public function addClass($class)
+    {
+        if (!is_array($class)) {
+            $class = preg_split('/\s+/', $class, null, PREG_SPLIT_NO_EMPTY);
+        }
+        $curClass = preg_split('/\s+/', $this->getAttribute('class'),
+                               null, PREG_SPLIT_NO_EMPTY);
+        foreach ($class as $c) {
+            if (!in_array($c, $curClass)) {
+                $curClass[] = $c;
+            }
+        }
+        $this->setAttribute('class', implode(' ', $curClass));
+
+        return $this;
+    }
+
+   /**
+    * Removes the given CSS class(es) from the element
+    *
+    * @param    string|array    Class name, multiple class names separated by
+    *                           whitespace, array of class names
+    * @return   HTML_Common2
+    */
+    public function removeClass($class)
+    {
+        if (!is_array($class)) {
+            $class = preg_split('/\s+/', $class, null, PREG_SPLIT_NO_EMPTY);
+        }
+        $curClass = array_diff(
+            preg_split('/\s+/', $this->getAttribute('class'),
+                       null, PREG_SPLIT_NO_EMPTY),
+            $class
+        );
+        if (0 == count($curClass)) {
+            $this->removeAttribute('class');
+        } else {
+            $this->setAttribute('class', implode(' ', $curClass));
+        }
+        return $this;
+    }
+
+   /**
     * Returns the HTML representation of the element
     *
     * This magic method allows using the instances of HTML_Common2 in string
@@ -404,7 +476,7 @@ abstract class HTML_Common2
     * setAttributes() or mergeAttributes() or removed via removeAttribute().
     * Note that the operation for the attribute is not carried on after calling
     * this method, it is the responsibility of this method to change or remove
-    * (or not) the attribute.   
+    * (or not) the attribute.
     *
     * @param    string  Attribute name
     * @param    string  Attribute value, null if attribute is being removed
