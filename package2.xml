@@ -46,7 +46,7 @@ HTML_Common2 package provides methods for HTML code display and attributes handl
   </notes>
   <contents>
     <dir name="/">
-      <file role="php" name="Common2.php" baseinstalldir="HTML">
+      <file role="php" name="HTML/Common2.php" baseinstalldir="/">
       	<tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <dir name="tests">
@@ -65,7 +65,12 @@ HTML_Common2 package provides methods for HTML code display and attributes handl
       </pearinstaller>
     </required>
   </dependencies>
-  <phprelease />
+  <phprelease>
+   <filelist>
+    <install as="HTML_Common2_Test.php" name="tests/HTML_Common2_Test.php" />
+    <install as="AllTests.php" name="tests/AllTests.php" />
+   </filelist>
+  </phprelease>
   <changelog>
   <release>
   
