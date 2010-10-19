@@ -6,7 +6,7 @@
  *
  * LICENSE:
  *
- * Copyright (c) 2004-2009, Alexey Borzov <avb@php.net>
+ * Copyright (c) 2001-2010, Alexey Borzov <avb@php.net>
  *
  * All rights reserved.
  *
@@ -199,7 +199,7 @@ abstract class HTML_Common2
     * @param    array   Attribute array
     * @param    string  Name of attribute to remove
     */
-    protected static function removeAttributeArray(&$attributes, $name)
+    protected static function removeAttributeArray(array &$attributes, $name)
     {
         unset($attributes[strtolower($name)]);
     }
@@ -210,14 +210,12 @@ abstract class HTML_Common2
     * @param    array   Attribute array
     * @return   string  Attribute string
     */
-    protected static function getAttributesString($attributes)
+    protected static function getAttributesString(array $attributes)
     {
-        $str = '';
-        if (is_array($attributes)) {
-            $charset = self::getOption('charset');
-            foreach ($attributes as $key => $value) {
-                $str .= ' ' . $key . '="' . htmlspecialchars($value, ENT_QUOTES, $charset) . '"';
-            }
+        $str     = '';
+        $charset = self::getOption('charset');
+        foreach ($attributes as $key => $value) {
+            $str .= ' ' . $key . '="' . htmlspecialchars($value, ENT_QUOTES, $charset) . '"';
         }
         return $str;
     }
