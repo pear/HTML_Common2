@@ -27,22 +27,23 @@ HTML_Common2 package provides methods for HTML code display and attributes handl
     <email>thesaur@php.net</email>
     <active>no</active>
   </lead>
-  <date>2009-09-27</date>
+  <date>2010-10-20</date>
   <version>
-    <release>2.0.0RC1</release>
-    <api>2.0.0RC1</api>
+    <release>2.0.0</release>
+    <api>2.0.0</api>
   </version>
   <stability>
-    <release>beta</release>
-    <api>beta</api>
+    <release>stable</release>
+    <api>stable</api>
   </stability>
   <license uri="http://opensource.org/licenses/bsd-license.php">BSD License</license>
   <notes>
- * HTML_Common2::getOption() now returns an array of all options if no option
-   name is given (see request #11209), setOption() can accept an array of options
- * Implemented hasClass() / addClass() / removeClass() methods for working with
-   element's CSS classes (see request #10191).
- * Packaging fixes: added AllTests.php, updated PEAR installer dependency
+ * Due to addition of end-user docs to PEAR manual, the package is now 
+   declared stable
+ * Added array type hinting to removeAttributeArray() and getAttributesString()
+   methods
+ * Packaging fix: tests now install without redundant subdirectory, to
+   @test_dir@/HTML_Common2 rather than to @test_dir@/HTML_Common2/tests
   </notes>
   <contents>
     <dir name="/">
@@ -72,8 +73,28 @@ HTML_Common2 package provides methods for HTML code display and attributes handl
    </filelist>
   </phprelease>
   <changelog>
+
   <release>
-  
+    <version>
+      <release>2.0.0RC1</release>
+      <api>2.0.0RC1</api>
+    </version>
+    <stability>
+      <release>beta</release>
+      <api>beta</api>
+    </stability>
+    <date>2009-09-27</date>
+    <license uri="http://opensource.org/licenses/bsd-license.php">BSD License</license>
+    <notes>
+ * HTML_Common2::getOption() now returns an array of all options if no option
+   name is given (see request #11209), setOption() can accept an array of options
+ * Implemented hasClass() / addClass() / removeClass() methods for working with
+   element's CSS classes (see request #10191).
+ * Packaging fixes: added AllTests.php, updated PEAR installer dependency
+    </notes>
+  </release>
+
+  <release>
   <version>
     <release>2.0.0beta1</release>
     <api>2.0.0beta1</api>
