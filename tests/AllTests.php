@@ -6,7 +6,7 @@
  *
  * LICENSE:
  *
- * Copyright (c) 2004-2010, Alexey Borzov <avb@php.net>
+ * Copyright (c) 2004-2011, Alexey Borzov <avb@php.net>
  *
  * All rights reserved.
  *
@@ -46,17 +46,15 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'HTML_Common2_AllTests::main');
 }
 
-require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/TextUI/TestRunner.php';
-
-chdir(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR);
-
 require_once dirname(__FILE__) . '/HTML_Common2_Test.php';
 
 class HTML_Common2_AllTests
 {
     public static function main()
     {
+        if (!function_exists('phpunit_autoload')) {
+            require_once 'PHPUnit/TextUI/TestRunner.php';
+        }
         PHPUnit_TextUI_TestRunner::run(self::suite());
     }
 

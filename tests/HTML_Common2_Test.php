@@ -6,7 +6,7 @@
  *
  * LICENSE:
  *
- * Copyright (c) 2004-2010, Alexey Borzov <avb@php.net>
+ * Copyright (c) 2004-2011, Alexey Borzov <avb@php.net>
  *
  * All rights reserved.
  *
@@ -42,10 +42,18 @@
  * @link       http://pear.php.net/package/HTML_Common2
  */
 
-/**
- * PHPUnit Test Case
- */
-require_once 'PHPUnit/Framework/TestCase.php';
+/** Include PHPUnit dependencies based on version */
+require_once 'PHPUnit/Runner/Version.php';
+
+$phpunitVersion = PHPUnit_Runner_Version::id();
+if ($phpunitVersion == '@' . 'package_version@' || !version_compare($phpunitVersion, '3.6', '<=')) {
+    echo "This version of PHPUnit is not supported.";
+    exit(1);
+} elseif (version_compare($phpunitVersion, '3.5.5', '>=')) {
+    require_once 'PHPUnit/Autoload.php';
+} else {
+    require_once 'PHPUnit/Framework.php';
+}
 
 /**
  * HTML_Common2 class
