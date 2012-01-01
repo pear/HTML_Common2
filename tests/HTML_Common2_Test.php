@@ -46,7 +46,7 @@
 require_once 'PHPUnit/Runner/Version.php';
 
 $phpunitVersion = PHPUnit_Runner_Version::id();
-if ($phpunitVersion == '@' . 'package_version@' || !version_compare($phpunitVersion, '3.6', '<=')) {
+if ($phpunitVersion == '@' . 'package_version@' || !version_compare($phpunitVersion, '3.7', '<=')) {
     echo "This version of PHPUnit is not supported.";
     exit(1);
 } elseif (version_compare($phpunitVersion, '3.5.5', '>=')) {
@@ -169,7 +169,7 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
         $obj->setAttribute('baz', 2.5);
         $obj->mergeAttributes(array('foobar' => 42));
         foreach ($obj->getAttributes() as $attribute) {
-            $this->assertType('string', $attribute);
+            $this->assertInternalType('string', $attribute);
         }
     }
 
