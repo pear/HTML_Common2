@@ -63,7 +63,7 @@ abstract class HTML_Common2
     protected $attributes = array();
 
    /**
-    * List of attribites changes to which will be announced via onAttributeChange()
+    * Changes to attributes in this list will be announced via onAttributeChange()
     * method rather than performed by HTML_Common2 class itself
     * @var array
     * @see onAttributeChange()
@@ -102,8 +102,8 @@ abstract class HTML_Common2
    /**
     * Sets global option(s)
     *
-    * @param    string|array    Option name or array ('option name' => 'option value')
-    * @param    mixed           Option value, if first argument is not an array
+    * @param string|array $nameOrOptions Option name or array ('option name' => 'option value')
+    * @param mixed        $value         Option value, if first argument is not an array
     */
     public static function setOption($nameOrOptions, $value = null)
     {
@@ -123,9 +123,10 @@ abstract class HTML_Common2
    /**
     * Returns global option(s)
     *
-    * @param    string  Option name
-    * @return   mixed   Option value, null if option does not exist,
-    *                   array of all options if $name is not given
+    * @param string $name Option name
+    *
+    * @return mixed Option value, null if option does not exist,
+    *               array of all options if $name is not given
     */
     public static function getOption($name = null)
     {
@@ -139,8 +140,9 @@ abstract class HTML_Common2
    /**
     * Parses the HTML attributes given as string
     *
-    * @param    string  HTML attribute string
-    * @return   array   An associative aray of attributes
+    * @param string $attrString HTML attribute string
+    *
+    * @return array An associative array of attributes
     */
     protected static function parseAttributes($attrString)
     {
@@ -171,8 +173,9 @@ abstract class HTML_Common2
    /**
     * Creates a valid attribute array from either a string or an array
     *
-    * @param    mixed   Array of attributes or HTML attribute string
-    * @return   array   An associative aray of attributes
+    * @param string|array $attributes Array of attributes or HTML attribute string
+    *
+    * @return array An associative array of attributes
     */
     protected static function prepareAttributes($attributes)
     {
@@ -196,8 +199,8 @@ abstract class HTML_Common2
    /**
     * Removes an attribute from an attribute array
     *
-    * @param    array   Attribute array
-    * @param    string  Name of attribute to remove
+    * @param array  &$attributes Attribute array
+    * @param string $name        Name of attribute to remove
     */
     protected static function removeAttributeArray(array &$attributes, $name)
     {
@@ -207,8 +210,9 @@ abstract class HTML_Common2
    /**
     * Creates HTML attribute string from array
     *
-    * @param    array   Attribute array
-    * @return   string  Attribute string
+    * @param array $attributes Attribute array
+    *
+    * @return string Attribute string
     */
     protected static function getAttributesString(array $attributes)
     {
@@ -223,7 +227,7 @@ abstract class HTML_Common2
    /**
     * Class constructor, sets default attributes
     *
-    * @param    mixed   Array of attribute 'name' => 'value' pairs or HTML attribute string
+    * @param array|string $attributes Array of attribute 'name' => 'value' pairs or HTML attribute string
     */
     public function __construct($attributes = null)
     {
@@ -233,9 +237,10 @@ abstract class HTML_Common2
    /**
     * Sets the value of the attribute
     *
-    * @param    string  Attribute name
-    * @param    string  Attribute value (will be set to $name if omitted)
-    * @return   HTML_Common2
+    * @param string $name  Attribute name
+    * @param string $value Attribute value (will be set to $name if omitted)
+    *
+    * @return HTML_Common2
     */
     public function setAttribute($name, $value = null)
     {
@@ -254,8 +259,9 @@ abstract class HTML_Common2
    /**
     * Returns the value of an attribute
     *
-    * @param    string  Attribute name
-    * @return   string  Attribute value, null if attribute does not exist
+    * @param string $name Attribute name
+    *
+    * @return string|null Attribute value, null if attribute does not exist
     */
     public function getAttribute($name)
     {
@@ -266,8 +272,10 @@ abstract class HTML_Common2
    /**
     * Sets the attributes
     *
-    * @param    mixed   Array of attribute 'name' => 'value' pairs or HTML attribute string
-    * @return   HTML_Common2
+    * @param string|array $attributes Array of attribute 'name' => 'value' pairs
+    *                                 or HTML attribute string
+    *
+    * @return HTML_Common2
     */
     public function setAttributes($attributes)
     {
@@ -291,8 +299,9 @@ abstract class HTML_Common2
    /**
     * Returns the attribute array or string
     *
-    * @param    bool    Whether to return attributes as string
-    * @return   mixed   Either an array or string of attributes
+    * @param bool $asString Whether to return attributes as string
+    *
+    * @return array|string
     */
     public function getAttributes($asString = false)
     {
@@ -306,8 +315,10 @@ abstract class HTML_Common2
    /**
     * Merges the existing attributes with the new ones
     *
-    * @param    mixed   Array of attribute 'name' => 'value' pairs or HTML attribute string
-    * @return   HTML_Common2
+    * @param array|string $attributes Array of attribute 'name' => 'value' pairs
+    *                                 or HTML attribute string
+    *
+    * @return HTML_Common2
     */
     public function mergeAttributes($attributes)
     {
@@ -325,8 +336,9 @@ abstract class HTML_Common2
    /**
     * Removes an attribute
     *
-    * @param    string  Name of attribute to remove
-    * @return   HTML_Common2
+    * @param string $attribute Name of attribute to remove
+    *
+    * @return HTML_Common2
     */
     public function removeAttribute($attribute)
     {
@@ -341,8 +353,9 @@ abstract class HTML_Common2
    /**
     * Sets the indentation level
     *
-    * @param    int
-    * @return   HTML_Common2
+    * @param int $level
+    *
+    * @return HTML_Common2
     */
     public function setIndentLevel($level)
     {
@@ -356,7 +369,7 @@ abstract class HTML_Common2
    /**
     * Gets the indentation level
     *
-    * @return   int
+    * @return int
     */
     public function getIndentLevel()
     {
@@ -366,7 +379,7 @@ abstract class HTML_Common2
    /**
     * Returns the string to indent the element
     *
-    * @return   string
+    * @return string
     */
     protected function getIndent()
     {
@@ -376,8 +389,9 @@ abstract class HTML_Common2
    /**
     * Sets the comment for the element
     *
-    * @param    string
-    * @return   HTML_Common2
+    * @param string $comment
+    *
+    * @return HTML_Common2
     */
     public function setComment($comment)
     {
@@ -388,7 +402,7 @@ abstract class HTML_Common2
    /**
     * Returns the comment associated with the element
     *
-    * @return   string
+    * @return string
     */
     public function getComment()
     {
@@ -398,8 +412,9 @@ abstract class HTML_Common2
    /**
     * Checks whether the element has given CSS class
     *
-    * @param    string  Class name
-    * @return   bool
+    * @param string $class CSS Class name
+    *
+    * @return bool
     */
     public function hasClass($class)
     {
@@ -410,9 +425,10 @@ abstract class HTML_Common2
    /**
     * Adds the given CSS class(es) to the element
     *
-    * @param    string|array    Class name, multiple class names separated by
-    *                           whitespace, array of class names
-    * @return   HTML_Common2
+    * @param string|array $class Class name, multiple class names separated by
+    *                            whitespace, array of class names
+    *
+    * @return HTML_Common2
     */
     public function addClass($class)
     {
@@ -434,9 +450,10 @@ abstract class HTML_Common2
    /**
     * Removes the given CSS class(es) from the element
     *
-    * @param    string|array    Class name, multiple class names separated by
-    *                           whitespace, array of class names
-    * @return   HTML_Common2
+    * @param string|array $class Class name, multiple class names separated by
+    *                            whitespace, array of class names
+    *
+    * @return HTML_Common2
     */
     public function removeClass($class)
     {
@@ -476,8 +493,8 @@ abstract class HTML_Common2
     * this method, it is the responsibility of this method to change or remove
     * (or not) the attribute.
     *
-    * @param    string  Attribute name
-    * @param    string  Attribute value, null if attribute is being removed
+    * @param string $name  Attribute name
+    * @param string $value Attribute value, null if attribute is being removed
     */
     protected function onAttributeChange($name, $value = null)
     {
