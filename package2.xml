@@ -27,10 +27,10 @@ HTML_Common2 package provides methods for HTML code display and attributes handl
     <email>thesaur@php.net</email>
     <active>no</active>
   </lead>
-  <date>2010-10-20</date>
+  <date>2012-04-08</date>
   <version>
-    <release>2.0.0</release>
-    <api>2.0.0</api>
+    <release>2.1.0</release>
+    <api>2.1.0</api>
   </version>
   <stability>
     <release>stable</release>
@@ -38,20 +38,20 @@ HTML_Common2 package provides methods for HTML code display and attributes handl
   </stability>
   <license uri="http://opensource.org/licenses/bsd-license.php">BSD License</license>
   <notes>
- * Due to addition of end-user docs to PEAR manual, the package is now 
-   declared stable
- * Added array type hinting to removeAttributeArray() and getAttributesString()
-   methods
- * Packaging fix: tests now install without redundant subdirectory, to
-   @test_dir@/HTML_Common2 rather than to @test_dir@/HTML_Common2/tests
+ * HTML_Common2 now implements ArrayAccess, allowing more intuitive attribute
+   handling similar to that of SimpleXML extension
+ * Unit tests properly run under recent PHPUnit versions and from SVN checkout
+ * Coding standards fixes
   </notes>
   <contents>
     <dir name="/">
       <file role="php" name="HTML/Common2.php" baseinstalldir="/">
-      	<tasks:replace from="@package_version@" to="version" type="package-info" />
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <dir name="tests">
-        <file role="test" name="HTML_Common2_Test.php" />
+        <file role="test" name="HTML_Common2_Test.php">
+          <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
         <file role="test" name="AllTests.php" />
       </dir>
     </dir>
@@ -73,6 +73,26 @@ HTML_Common2 package provides methods for HTML code display and attributes handl
    </filelist>
   </phprelease>
   <changelog>
+   <release>
+    <date>2010-10-20</date>
+    <version>
+     <release>2.0.0</release>
+     <api>2.0.0</api>
+    </version>
+    <stability>
+     <release>stable</release>
+     <api>stable</api>
+    </stability>
+    <license uri="http://opensource.org/licenses/bsd-license.php">BSD License</license>
+    <notes>
+ * Due to addition of end-user docs to PEAR manual, the package is now
+   declared stable
+ * Added array type hinting to removeAttributeArray() and getAttributesString()
+   methods
+ * Packaging fix: tests now install without redundant subdirectory, to
+   @test_dir@/HTML_Common2 rather than to @test_dir@/HTML_Common2/tests
+    </notes>
+   </release>
 
   <release>
     <version>
@@ -112,7 +132,7 @@ HTML_Common2 package provides methods for HTML code display and attributes handl
   removeAttribute(), setAttribute(), setAttributes(), setComment() and
   setIndentLevel().
   </notes>
-  </release>  
+  </release>
   <release>
     <version>
       <release>0.3.0</release>
@@ -125,7 +145,7 @@ HTML_Common2 package provides methods for HTML code display and attributes handl
     <date>2006-10-16</date>
     <license uri="http://opensource.org/licenses/bsd-license.php">BSD License</license>
     <notes>
-Radical changes to API are not expected after this release, you may use the 
+Radical changes to API are not expected after this release, you may use the
 package for development.
 
 Changes:
@@ -133,7 +153,7 @@ Changes:
 * Removed toHtml() and display() methods, __toString() is now declared abstract
 * Attribute values are always converted to strings
 * Minor performance tweaks
-* Switched to BSD license and package.xml 2.0 
+* Switched to BSD license and package.xml 2.0
     </notes>
   </release>
 

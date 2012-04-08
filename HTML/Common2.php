@@ -56,7 +56,7 @@
  * @version  Release: @package_version@
  * @link     http://pear.php.net/package/HTML_Common2
  */
-abstract class HTML_Common2
+abstract class HTML_Common2 implements ArrayAccess
 {
     /**
      * Associative array of attributes
@@ -503,6 +503,67 @@ abstract class HTML_Common2
      */
     protected function onAttributeChange($name, $value = null)
     {
+    }
+
+    /**
+     * Whether or not an offset (HTML attribute) exists
+     *
+     * @param string $offset An offset to check for.
+     *
+     * @return boolean Returns true on success or false on failure.
+     * @link http://php.net/manual/en/arrayaccess.offsetexists.php
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->attributes[strtolower($offset)]);
+    }
+
+    /**
+     * Returns the value at specified offset (i.e. attribute name)
+     *
+     * @param string $offset The offset to retrieve.
+     *
+     * @return string|null
+     * @link http://php.net/manual/en/arrayaccess.offsetget.php
+     * @see getAttribute()
+     */
+    public function offsetGet($offset)
+    {
+        return $this->getAttribute($offset);
+    }
+
+    /**
+     * Assigns a value to the specified offset (i.e. attribute name)
+     *
+     * @param string $offset The offset to assign the value to
+     * @param string $value  The value to set
+     *
+     * @return void
+     * @link http://php.net/manual/en/arrayaccess.offsetset.php
+     * @see setAttribute()
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (null !== $offset) {
+            $this->setAttribute($offset, $value);
+        } else {
+            // handles $foo[] = 'disabled';
+            $this->setAttribute($value);
+        }
+    }
+
+    /**
+     * Unsets an offset (i.e. removes an attribute)
+     *
+     * @param string $offset The offset to unset
+     *
+     * @return void
+     * @link http://php.net/manual/en/arrayaccess.offsetunset.php
+     * @see removeAttribute
+     */
+    public function offsetUnset($offset)
+    {
+        $this->removeAttribute($offset);
     }
 }
 ?>

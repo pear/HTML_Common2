@@ -6,7 +6,7 @@
  *
  * LICENSE:
  *
- * Copyright (c) 2004-2011, Alexey Borzov <avb@php.net>
+ * Copyright (c) 2004-2012, Alexey Borzov <avb@php.net>
  *
  * All rights reserved.
  *
@@ -55,10 +55,15 @@ if ($phpunitVersion == '@' . 'package_version@' || !version_compare($phpunitVers
     require_once 'PHPUnit/Framework.php';
 }
 
-/**
- * HTML_Common2 class
- */
-require_once 'HTML/Common2.php';
+
+if ('@' . 'package_version@' == '@package_version@') {
+    // If running from SVN checkout, do a relative include
+    require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'HTML/Common2.php';
+} else {
+    // If installed, use include_path
+    require_once 'HTML/Common2.php';
+}
+
 
 /**
  * A non-abstract subclass of HTML_Common2
@@ -299,6 +304,23 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
 
         $obj->removeClass(array('quux'));
         $this->assertEquals(null, $obj->getAttribute('class'));
+    }
+
+    public function testArrayAccess()
+    {
+        $obj = new HTML_Common2_Concrete(array('baz' => 'quux'));
+        $this->assertTrue(isset($obj['baz']));
+        $this->assertEquals('quux', $obj['baz']);
+
+        $obj['foo'] = 'bar';
+        $this->assertTrue(isset($obj['foo']));
+        $this->assertEquals('bar', $obj['foo']);
+        unset($obj['fOo']);
+        $this->assertFalse(isset($obj['foo']));
+
+        $obj[] = 'disabled';
+        $this->assertTrue(isset($obj['disabled']));
+        $this->assertEquals('disabled', $obj['disabled']);
     }
 }
 ?>
