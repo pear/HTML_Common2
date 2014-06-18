@@ -6,7 +6,7 @@
  *
  * LICENSE:
  *
- * Copyright (c) 2004-2012, Alexey Borzov <avb@php.net>
+ * Copyright (c) 2004-2014, Alexey Borzov <avb@php.net>
  *
  * All rights reserved.
  *
@@ -38,7 +38,6 @@
  * @package  HTML_Common2
  * @author   Alexey Borzov <avb@php.net>
  * @license  http://opensource.org/licenses/bsd-license.php New BSD License
- * @version  SVN: $Id$
  * @link     http://pear.php.net/package/HTML_Common2
  */
 
