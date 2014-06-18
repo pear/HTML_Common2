@@ -27,9 +27,9 @@ HTML_Common2 package provides methods for HTML code display and attributes handl
     <email>thesaur@php.net</email>
     <active>no</active>
   </lead>
-  <date>2012-04-08</date>
+  <date>2014-06-18</date>
   <version>
-    <release>2.1.0</release>
+    <release>2.1.1</release>
     <api>2.1.0</api>
   </version>
   <stability>
@@ -38,10 +38,7 @@ HTML_Common2 package provides methods for HTML code display and attributes handl
   </stability>
   <license uri="http://opensource.org/licenses/bsd-license.php">BSD License</license>
   <notes>
- * HTML_Common2 now implements ArrayAccess, allowing more intuitive attribute
-   handling similar to that of SimpleXML extension
- * Unit tests properly run under recent PHPUnit versions and from SVN checkout
- * Coding standards fixes
+Minor updates to PHPDoc and tests setup, no code changes
   </notes>
   <contents>
     <dir name="/">
@@ -73,6 +70,24 @@ HTML_Common2 package provides methods for HTML code display and attributes handl
    </filelist>
   </phprelease>
   <changelog>
+   <release>
+    <date>2012-04-08</date>
+    <version>
+     <release>2.1.0</release>
+     <api>2.1.0</api>
+    </version>
+    <stability>
+     <release>stable</release>
+     <api>stable</api>
+    </stability>
+    <license uri="http://opensource.org/licenses/bsd-license.php">BSD License</license>
+    <notes>
+ * HTML_Common2 now implements ArrayAccess, allowing more intuitive attribute
+   handling similar to that of SimpleXML extension
+ * Unit tests properly run under recent PHPUnit versions and from SVN checkout
+ * Coding standards fixes
+    </notes>
+   </release>
    <release>
     <date>2010-10-20</date>
     <version>
