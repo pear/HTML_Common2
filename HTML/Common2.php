@@ -242,7 +242,7 @@ abstract class HTML_Common2 implements ArrayAccess
      * @param string $name  Attribute name
      * @param string $value Attribute value (will be set to $name if omitted)
      *
-     * @return HTML_Common2
+     * @return $this
      */
     public function setAttribute($name, $value = null)
     {
@@ -277,7 +277,7 @@ abstract class HTML_Common2 implements ArrayAccess
      * @param string|array $attributes Array of attribute 'name' => 'value' pairs
      *                                 or HTML attribute string
      *
-     * @return HTML_Common2
+     * @return $this
      */
     public function setAttributes($attributes)
     {
@@ -320,7 +320,7 @@ abstract class HTML_Common2 implements ArrayAccess
      * @param array|string $attributes Array of attribute 'name' => 'value' pairs
      *                                 or HTML attribute string
      *
-     * @return HTML_Common2
+     * @return $this
      */
     public function mergeAttributes($attributes)
     {
@@ -340,7 +340,7 @@ abstract class HTML_Common2 implements ArrayAccess
      *
      * @param string $attribute Name of attribute to remove
      *
-     * @return HTML_Common2
+     * @return $this
      */
     public function removeAttribute($attribute)
     {
@@ -357,7 +357,7 @@ abstract class HTML_Common2 implements ArrayAccess
      *
      * @param int $level Indentation level
      *
-     * @return HTML_Common2
+     * @return $this
      */
     public function setIndentLevel($level)
     {
@@ -393,7 +393,7 @@ abstract class HTML_Common2 implements ArrayAccess
      *
      * @param string $comment String to output as HTML comment
      *
-     * @return HTML_Common2
+     * @return $this
      */
     public function setComment($comment)
     {
@@ -430,7 +430,7 @@ abstract class HTML_Common2 implements ArrayAccess
      * @param string|array $class Class name, multiple class names separated by
      *                            whitespace, array of class names
      *
-     * @return HTML_Common2
+     * @return $this
      */
     public function addClass($class)
     {
@@ -456,7 +456,7 @@ abstract class HTML_Common2 implements ArrayAccess
      * @param string|array $class Class name, multiple class names separated by
      *                            whitespace, array of class names
      *
-     * @return HTML_Common2
+     * @return $this
      */
     public function removeClass($class)
     {
@@ -558,7 +558,7 @@ abstract class HTML_Common2 implements ArrayAccess
      *
      * @return void
      * @link http://php.net/manual/en/arrayaccess.offsetunset.php
-     * @see removeAttribute
+     * @see removeAttribute()
      */
     public function offsetUnset($offset)
     {
