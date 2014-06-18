@@ -42,7 +42,11 @@
  */
 
 if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'HTML_Common2_AllTests::main');
+    if (strpos($_SERVER['argv'][0], 'phpunit') === false) {
+        define('PHPUnit_MAIN_METHOD', 'HTML_Common2_AllTests::main');
+    } else {
+        define('PHPUnit_MAIN_METHOD', false);
+    }
 }
 
 require_once dirname(__FILE__) . '/HTML_Common2_Test.php';
