@@ -1,5 +1,7 @@
 # HTML_Common2
 
+[![Build Status](https://travis-ci.org/pear/HTML_Common2.svg?branch=trunk)](https://travis-ci.org/pear/HTML_Common2)
+
 This is a repository for [PEAR HTML_Common2] package that has been migrated from [PEAR SVN].
 
 The package contains an abstract `HTML_Common2` class that implements methods for HTML attributes handling and
