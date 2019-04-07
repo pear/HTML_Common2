@@ -18,7 +18,7 @@ matrix:
     - php: "7.3"
 
 install:
-  - if [[ $PHP52SUCKS != true ]]; then composer install fi
+  - if [[ $PHP52SUCKS != true ]]; then composer install; fi
 script:
   - |
     if [[ $PHP52SUCKS == true ]]; then
