@@ -41,22 +41,20 @@
  * @link       http://pear.php.net/package/HTML_Common2
  */
 
-if (strpos($_SERVER['argv'][0], 'phpunit') === false) {
-    /** Include PHPUnit dependencies based on version */
-    require_once 'PHPUnit/Runner/Version.php';
-    if (version_compare(PHPUnit_Runner_Version::id(), '3.5.0', '>=')) {
-        require_once 'PHPUnit/Autoload.php';
-    } else {
-        require_once 'PHPUnit/Framework.php';
-    }
+if (strpos($_SERVER['argv'][0], 'phpunit') === false
+    && !class_exists('PHPUnit_Framework_TestCase', true)
+) {
+    require_once 'PHPUnit/Autoload.php';
 }
 
-if ('@' . 'package_version@' == '@package_version@') {
-    // If running from SVN checkout, do a relative include
-    require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'HTML/Common2.php';
-} else {
-    // If installed, use include_path
-    require_once 'HTML/Common2.php';
+if (!class_exists('HTML_Common2', true)) {
+    if ('@' . 'package_version@' == '@package_version@') {
+        // If running from SVN checkout, do a relative include
+        require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'HTML/Common2.php';
+    } else {
+        // If installed, use include_path
+        require_once 'HTML/Common2.php';
+    }
 }
 
 
