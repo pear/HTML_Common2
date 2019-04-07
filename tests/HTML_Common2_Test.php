@@ -6,7 +6,7 @@
  *
  * LICENSE:
  *
- * Copyright (c) 2004-2014, Alexey Borzov <avb@php.net>
+ * Copyright (c) 2004-2019, Alexey Borzov <avb@php.net>
  *
  * All rights reserved.
  *
