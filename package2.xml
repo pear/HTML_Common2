@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<package
+<package version="2.0"
  xmlns="http://pear.php.net/dtd/package-2.0"
  xmlns:tasks="http://pear.php.net/dtd/tasks-1.0"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -58,7 +58,7 @@ Removed include-path from composer.json, use autoloading when installing with co
   <dependencies>
     <required>
       <php>
-        <min>5.1.4</min>
+        <min>5.2.0</min>
       </php>
       <pearinstaller>
         <min>1.5.4</min>
