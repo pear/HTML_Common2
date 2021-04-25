@@ -27,20 +27,21 @@ HTML_Common2 package provides methods for HTML code display and attributes handl
     <email>thesaur@php.net</email>
     <active>no</active>
   </lead>
-  <date>2019-04-07</date>
+  <date>2021-04-25</date>
   <version>
-    <release>2.1.2</release>
+    <release>2.2.0</release>
     <api>2.1.0</api>
   </version>
   <stability>
     <release>stable</release>
     <api>stable</api>
   </stability>
-  <license uri="http://opensource.org/licenses/bsd-license.php">BSD License</license>
+  <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD License</license>
   <notes>
-Minor updates to tests setup, no code changes
-
-Removed include-path from composer.json, use autoloading when installing with composer
+* Minimum required PHP version is now 5.4
+* Added constants for predefined global option names
+* Fixed composer autoloading to prevent errors on classmap generation,
+  see https://github.com/pear/HTML_QuickForm2/issues/4
   </notes>
   <contents>
     <dir name="/">
@@ -58,10 +59,10 @@ Removed include-path from composer.json, use autoloading when installing with co
   <dependencies>
     <required>
       <php>
-        <min>5.2.0</min>
+        <min>5.4.0</min>
       </php>
       <pearinstaller>
-        <min>1.5.4</min>
+        <min>1.10.0</min>
       </pearinstaller>
     </required>
   </dependencies>
@@ -73,6 +74,23 @@ Removed include-path from composer.json, use autoloading when installing with co
   </phprelease>
   <changelog>
    <release>
+    <date>2019-04-07</date>
+    <version>
+     <release>2.1.2</release>
+     <api>2.1.0</api>
+    </version>
+    <stability>
+     <release>stable</release>
+     <api>stable</api>
+    </stability>
+    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD License</license>
+    <notes>
+Minor updates to tests setup, no code changes
+
+Removed include-path from composer.json, use autoloading when installing with composer
+    </notes>
+   </release>
+   <release>
     <date>2014-06-18</date>
     <version>
       <release>2.1.1</release>
@@ -82,7 +100,7 @@ Removed include-path from composer.json, use autoloading when installing with co
       <release>stable</release>
       <api>stable</api>
     </stability>
-    <license uri="http://opensource.org/licenses/bsd-license.php">BSD License</license>
+    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD License</license>
     <notes>
 Minor updates to PHPDoc and tests setup, no code changes
     </notes>
@@ -97,7 +115,7 @@ Minor updates to PHPDoc and tests setup, no code changes
      <release>stable</release>
      <api>stable</api>
     </stability>
-    <license uri="http://opensource.org/licenses/bsd-license.php">BSD License</license>
+    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD License</license>
     <notes>
  * HTML_Common2 now implements ArrayAccess, allowing more intuitive attribute
    handling similar to that of SimpleXML extension
@@ -115,7 +133,7 @@ Minor updates to PHPDoc and tests setup, no code changes
      <release>stable</release>
      <api>stable</api>
     </stability>
-    <license uri="http://opensource.org/licenses/bsd-license.php">BSD License</license>
+    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD License</license>
     <notes>
  * Due to addition of end-user docs to PEAR manual, the package is now
    declared stable
@@ -136,7 +154,7 @@ Minor updates to PHPDoc and tests setup, no code changes
       <api>beta</api>
     </stability>
     <date>2009-09-27</date>
-    <license uri="http://opensource.org/licenses/bsd-license.php">BSD License</license>
+    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD License</license>
     <notes>
  * HTML_Common2::getOption() now returns an array of all options if no option
    name is given (see request #11209), setOption() can accept an array of options
@@ -156,7 +174,7 @@ Minor updates to PHPDoc and tests setup, no code changes
     <api>beta</api>
   </stability>
   <date>2007-05-04</date>
-  <license uri="http://opensource.org/licenses/bsd-license.php">BSD License</license>
+  <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD License</license>
   <notes>
 * Use phpunit/PHPUnit rather than pear/PHPUnit2 for unit testing needs
 * &quot;Fluent interfaces&quot;: all methods that didn&apos;t return anything now
@@ -175,7 +193,7 @@ Minor updates to PHPDoc and tests setup, no code changes
       <api>alpha</api>
     </stability>
     <date>2006-10-16</date>
-    <license uri="http://opensource.org/licenses/bsd-license.php">BSD License</license>
+    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD License</license>
     <notes>
 Radical changes to API are not expected after this release, you may use the
 package for development.
