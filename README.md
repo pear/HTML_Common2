@@ -32,6 +32,19 @@ Pull requests are welcome.
 [PEAR bug tracker]: http://pear.php.net/bugs/search.php?cmd=display&package_name[]=HTML_Common2
 [Github issues]: https://github.com/pear/HTML_Common2/issues
 
+## Installation
+
+The package may be installed either with PEAR
+
+    $ pear install HTML_Common2
+
+or with composer
+
+    $ composer require pear/html_common2
+
+Note that `composer.json` does not define `include-path` option: `require_once 'HTML/Common2.php'` will not
+work with composer installation, use autoloading.
+
 ## Testing, Packaging and Installing (Pear)
 
 To test, run either
