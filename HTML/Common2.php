@@ -58,6 +58,36 @@
 abstract class HTML_Common2 implements ArrayAccess
 {
     /**
+     * Constant for predefined 'charset' option
+     */
+    const OPTION_CHARSET   = 'charset';
+
+    /**
+     * Constant for predefined 'indent' option
+     */
+    const OPTION_INDENT    = 'indent';
+
+    /**
+     * Constant for predefined 'linebreak' option
+     */
+    const OPTION_LINEBREAK = 'linebreak';
+
+    /**
+     * Line break for Windows platform
+     */
+    const LINEBREAK_WIN  = "\15\12";
+
+    /**
+     * Line break for Unix platform
+     */
+    const LINEBREAK_UNIX = "\12";
+
+    /**
+     * Line break for Mac platform
+     */
+    const LINEBREAK_MAC  = "\15";
+
+    /**
      * Associative array of attributes
      * @var array
      */
@@ -95,9 +125,20 @@ abstract class HTML_Common2 implements ArrayAccess
      * @var array
      */
     private static $_options = [
-        'charset'   => 'ISO-8859-1',
-        'indent'    => "\11",
-        'linebreak' => "\12"
+        self::OPTION_CHARSET   => 'ISO-8859-1',
+        self::OPTION_INDENT    => "\11",
+        self::OPTION_LINEBREAK => self::LINEBREAK_UNIX
+    ];
+
+    /**
+     * Mapping "platform name" => "linebreak symbol(s)"
+     *
+     * @var array
+     */
+    private static $_linebreaks = [
+        'win'  => self::LINEBREAK_WIN,
+        'unix' => self::LINEBREAK_UNIX,
+        'mac'  => self::LINEBREAK_MAC
     ];
 
     /**
@@ -113,9 +154,8 @@ abstract class HTML_Common2 implements ArrayAccess
                 self::setOption($k, $v);
             }
         } else {
-            $linebreaks = ['win' => "\15\12", 'unix' => "\12", 'mac' => "\15"];
-            if ('linebreak' == $nameOrOptions && isset($linebreaks[$value])) {
-                $value = $linebreaks[$value];
+            if (self::OPTION_LINEBREAK === $nameOrOptions && isset(self::$_linebreaks[$value])) {
+                $value = self::$_linebreaks[$value];
             }
             self::$_options[$nameOrOptions] = $value;
         }
@@ -218,7 +258,7 @@ abstract class HTML_Common2 implements ArrayAccess
     protected static function getAttributesString(array $attributes)
     {
         $str     = '';
-        $charset = self::getOption('charset');
+        $charset = self::getOption(self::OPTION_CHARSET);
         foreach ($attributes as $key => $value) {
             $str .= ' ' . $key . '="' . htmlspecialchars($value, ENT_QUOTES, $charset) . '"';
         }
@@ -385,7 +425,7 @@ abstract class HTML_Common2 implements ArrayAccess
      */
     protected function getIndent()
     {
-        return str_repeat(self::getOption('indent'), $this->getIndentLevel());
+        return str_repeat(self::getOption(self::OPTION_INDENT), $this->getIndentLevel());
     }
 
     /**

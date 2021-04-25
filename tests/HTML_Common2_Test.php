@@ -125,7 +125,7 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
         ]);
         $this->assertEquals('xyzzy', HTML_Common2::getOption('quux'));
 
-        $this->assertArrayHasKey('charset', HTML_Common2::getOption());
+        $this->assertArrayHasKey(HTML_Common2::OPTION_CHARSET, HTML_Common2::getOption());
     }
 
     public function testConstructorSetsDefaultAttributes()
