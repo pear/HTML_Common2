@@ -22,12 +22,18 @@
         "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=HTML_Common2",
         "source": "https://github.com/pear/HTML_Common2"
     },
+    "require": {
+        "php": ">=5.4.0"
+    },
     "require-dev": {
-        "phpunit/phpunit": "^3.7|^4.8|^5.7"
+        "phpunit/phpunit": "^4.8|^5.7"
     },
     "autoload": {
         "psr-0": {
-            "HTML": "./"
+            "HTML_Common2": ""
         }
+    },
+    "autoload-dev": {
+        "classmap": ["tests/"]
     }
 }
