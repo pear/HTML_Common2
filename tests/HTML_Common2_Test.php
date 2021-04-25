@@ -41,10 +41,8 @@
  * @link       http://pear.php.net/package/HTML_Common2
  */
 
-if (strpos($_SERVER['argv'][0], 'phpunit') === false
-    && !class_exists('PHPUnit_Framework_TestCase', true)
-) {
-    require_once 'PHPUnit/Autoload.php';
+if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
+    require_once dirname(__DIR__) . '/vendor/autoload.php';
 }
 
 if (!class_exists('HTML_Common2', true)) {
