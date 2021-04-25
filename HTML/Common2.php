@@ -61,7 +61,7 @@ abstract class HTML_Common2 implements ArrayAccess
      * Associative array of attributes
      * @var array
      */
-    protected $attributes = array();
+    protected $attributes = [];
 
     /**
      * Changes to attributes in this list will be announced via onAttributeChange()
@@ -69,7 +69,7 @@ abstract class HTML_Common2 implements ArrayAccess
      * @var array
      * @see onAttributeChange()
      */
-    protected $watchedAttributes = array();
+    protected $watchedAttributes = [];
 
     /**
      * Indentation level of the element
@@ -94,11 +94,11 @@ abstract class HTML_Common2 implements ArrayAccess
      *
      * @var array
      */
-    private static $_options = array(
+    private static $_options = [
         'charset'   => 'ISO-8859-1',
         'indent'    => "\11",
         'linebreak' => "\12"
-    );
+    ];
 
     /**
      * Sets global option(s)
@@ -113,7 +113,7 @@ abstract class HTML_Common2 implements ArrayAccess
                 self::setOption($k, $v);
             }
         } else {
-            $linebreaks = array('win' => "\15\12", 'unix' => "\12", 'mac' => "\15");
+            $linebreaks = ['win' => "\15\12", 'unix' => "\12", 'mac' => "\15"];
             if ('linebreak' == $nameOrOptions && isset($linebreaks[$value])) {
                 $value = $linebreaks[$value];
             }
@@ -147,7 +147,7 @@ abstract class HTML_Common2 implements ArrayAccess
      */
     protected static function parseAttributes($attrString)
     {
-        $attributes = array();
+        $attributes = [];
         if (preg_match_all(
             "/(([A-Za-z_:]|[^\\x00-\\x7F])([A-Za-z0-9_:.-]|[^\\x00-\\x7F])*)" .
             "([ \\n\\t\\r]+)?(=([ \\n\\t\\r]+)?(\"[^\"]*\"|'[^']*'|[^ \\n\\t\\r]*))?/",
@@ -180,7 +180,7 @@ abstract class HTML_Common2 implements ArrayAccess
      */
     protected static function prepareAttributes($attributes)
     {
-        $prepared = array();
+        $prepared = [];
         if (is_string($attributes)) {
             return self::parseAttributes($attributes);
 
@@ -282,7 +282,7 @@ abstract class HTML_Common2 implements ArrayAccess
     public function setAttributes($attributes)
     {
         $attributes = self::prepareAttributes($attributes);
-        $watched    = array();
+        $watched    = [];
         foreach ($this->watchedAttributes as $watchedKey) {
             if (isset($attributes[$watchedKey])) {
                 $this->setAttribute($watchedKey, $attributes[$watchedKey]);

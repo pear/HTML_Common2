@@ -48,7 +48,7 @@ if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
 if (!class_exists('HTML_Common2', true)) {
     if ('@' . 'package_version@' == '@package_version@') {
         // If running from SVN checkout, do a relative include
-        require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'HTML/Common2.php';
+        require_once dirname(__DIR__) . '/HTML/Common2.php';
     } else {
         // If installed, use include_path
         require_once 'HTML/Common2.php';
@@ -80,12 +80,12 @@ class HTML_Common2_Concrete extends HTML_Common2
  */
 class HTML_Common2_WatchedAttributes extends HTML_Common2_Concrete
 {
-    protected $watchedAttributes = array('readonly', 'uppercase');
+    protected $watchedAttributes = ['readonly', 'uppercase'];
 
-    protected $attributes = array(
+    protected $attributes = [
         'readonly'  => 'this attribute is readonly',
         'uppercase' => 'VALUE OF THIS IS ALWAYS UPPERCASE'
-    );
+    ];
 
     protected function onAttributeChange($name, $value = null)
     {
@@ -120,9 +120,9 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
 
     public function testArrayOfOptionsAllowed()
     {
-        HTML_Common2::setOption(array(
+        HTML_Common2::setOption([
             'quux' => 'xyzzy'
-        ));
+        ]);
         $this->assertEquals('xyzzy', HTML_Common2::getOption('quux'));
 
         $this->assertArrayHasKey('charset', HTML_Common2::getOption());
@@ -131,9 +131,9 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
     public function testConstructorSetsDefaultAttributes()
     {
         $obj = new HTML_Common2_Concrete();
-        $this->assertEquals(array(), $obj->getAttributes());
-        $obj = new HTML_Common2_Concrete(array('foo' => 'bar'));
-        $this->assertEquals(array('foo' => 'bar'), $obj->getAttributes());
+        $this->assertEquals([], $obj->getAttributes());
+        $obj = new HTML_Common2_Concrete(['foo' => 'bar']);
+        $this->assertEquals(['foo' => 'bar'], $obj->getAttributes());
     }
 
     public function testUnknownAttributeIsNull()
@@ -145,15 +145,15 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
     public function testAttributeNamesAreLowercased()
     {
         $obj = new HTML_Common2_Concrete();
-        $obj->setAttributes(array('BAZ' => 'quux'));
+        $obj->setAttributes(['BAZ' => 'quux']);
         $obj->setAttribute('Foo', 'bar');
-        $obj->mergeAttributes(array('XyZZy' => 'xyzzy value'));
+        $obj->mergeAttributes(['XyZZy' => 'xyzzy value']);
 
         $this->assertEquals('bar', $obj->getAttribute('FOO'));
 
         $obj->removeAttribute('fOO');
         $this->assertEquals(
-            array('baz' => 'quux', 'xyzzy' => 'xyzzy value'),
+            ['baz' => 'quux', 'xyzzy' => 'xyzzy value'],
             $obj->getAttributes()
         );
     }
@@ -161,9 +161,9 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
     public function testAttributeValuesAreStrings()
     {
         $obj = new HTML_Common2_Concrete();
-        $obj->setAttributes(array('foo' => null, 'bar' => 10));
+        $obj->setAttributes(['foo' => null, 'bar' => 10]);
         $obj->setAttribute('baz', 2.5);
-        $obj->mergeAttributes(array('foobar' => 42));
+        $obj->mergeAttributes(['foobar' => 42]);
         foreach ($obj->getAttributes() as $attribute) {
             $this->assertInternalType('string', $attribute);
         }
@@ -194,27 +194,27 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
     {
         $obj = new HTML_Common2_Concrete('multiple  style= "height: 2em;" class=\'foo\' width=100% ');
         $this->assertEquals(
-            array('multiple' => 'multiple', 'style' => 'height: 2em;',
-                  'class' => 'foo', 'width' => '100%'),
+            ['multiple' => 'multiple', 'style' => 'height: 2em;',
+                  'class' => 'foo', 'width' => '100%'],
             $obj->getAttributes()
         );
     }
 
     public function testNonXhtmlAttributesTransformed()
     {
-        $obj = new HTML_Common2_Concrete(array('multiple'));
+        $obj = new HTML_Common2_Concrete(['multiple']);
         $obj->setAttribute('selected');
         $obj->mergeAttributes('checked nowrap');
         $this->assertEquals(
-            array('multiple' => 'multiple', 'selected' => 'selected',
-                  'checked' => 'checked', 'nowrap' => 'nowrap'),
+            ['multiple' => 'multiple', 'selected' => 'selected',
+                  'checked' => 'checked', 'nowrap' => 'nowrap'],
             $obj->getAttributes()
         );
     }
 
     public function testWellFormedXhtmlGenerated()
     {
-        $obj = new HTML_Common2_Concrete(array('foo' => 'bar&"baz"', 'quux' => 'xyz\'zy'));
+        $obj = new HTML_Common2_Concrete(['foo' => 'bar&"baz"', 'quux' => 'xyz\'zy']);
         $this->assertEquals(
             ' foo="bar&amp;&quot;baz&quot;" quux="xyz&#039;zy"',
             $obj->getAttributes(true)
@@ -225,15 +225,15 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
     {
         $obj = new HTML_Common2_WatchedAttributes();
 
-        $obj->setAttributes(array('readonly' => 'something', 'uppercase' => 'new value', 'foo' => 'bar'));
+        $obj->setAttributes(['readonly' => 'something', 'uppercase' => 'new value', 'foo' => 'bar']);
         $this->assertEquals(
-            array('readonly' => 'this attribute is readonly', 'uppercase' => 'NEW VALUE', 'foo' => 'bar'),
+            ['readonly' => 'this attribute is readonly', 'uppercase' => 'NEW VALUE', 'foo' => 'bar'],
             $obj->getAttributes()
         );
 
-        $obj->mergeAttributes(array('readonly' => 'something', 'uppercase' => 'other value', 'foo' => 'baz'));
+        $obj->mergeAttributes(['readonly' => 'something', 'uppercase' => 'other value', 'foo' => 'baz']);
         $this->assertEquals(
-            array('readonly' => 'this attribute is readonly', 'uppercase' => 'OTHER VALUE', 'foo' => 'baz'),
+            ['readonly' => 'this attribute is readonly', 'uppercase' => 'OTHER VALUE', 'foo' => 'baz'],
             $obj->getAttributes()
         );
 
@@ -241,7 +241,7 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
         $obj->setAttribute('uppercase', 'yet another value');
         $obj->setAttribute('foo', 'quux');
         $this->assertEquals(
-            array('readonly' => 'this attribute is readonly', 'uppercase' => 'YET ANOTHER VALUE', 'foo' => 'quux'),
+            ['readonly' => 'this attribute is readonly', 'uppercase' => 'YET ANOTHER VALUE', 'foo' => 'quux'],
             $obj->getAttributes()
         );
 
@@ -249,7 +249,7 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
         $obj->removeAttribute('uppercase');
         $obj->removeAttribute('foo');
         $this->assertEquals(
-            array('readonly' => 'this attribute is readonly'),
+            ['readonly' => 'this attribute is readonly'],
             $obj->getAttributes()
         );
     }
@@ -258,8 +258,8 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
     {
         $obj = new HTML_Common2_Concrete();
 
-        $this->assertSame($obj, $obj->setAttributes(array('foo' => 'foo value')));
-        $this->assertSame($obj, $obj->mergeAttributes(array('bar' => 'bar value')));
+        $this->assertSame($obj, $obj->setAttributes(['foo' => 'foo value']));
+        $this->assertSame($obj, $obj->mergeAttributes(['bar' => 'bar value']));
         $this->assertSame($obj, $obj->setAttribute('baz', 'baz value'));
         $this->assertSame($obj, $obj->removeAttribute('bar'));
         $this->assertSame($obj, $obj->setComment('A comment'));
@@ -280,26 +280,26 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
         $this->assertTrue($obj->hasClass('quux'));
         $this->assertTrue($obj->hasClass('xyzzy'));
 
-        $obj->addClass(array('newclass'));
+        $obj->addClass(['newclass']);
         $this->assertTrue($obj->hasClass('newclass'));
     }
 
     public function testCanRemoveCssClasses()
     {
-        $obj = new HTML_Common2_Concrete(array('class' => 'foobar quux xyzzy'));
+        $obj = new HTML_Common2_Concrete(['class' => 'foobar quux xyzzy']);
 
         $obj->removeClass('foobar xyzzy');
         $this->assertFalse($obj->hasClass('xyzzy'));
         $this->assertFalse($obj->hasClass('foobar'));
         $this->assertTrue($obj->hasClass('quux'));
 
-        $obj->removeClass(array('quux'));
+        $obj->removeClass(['quux']);
         $this->assertEquals(null, $obj->getAttribute('class'));
     }
 
     public function testArrayAccess()
     {
-        $obj = new HTML_Common2_Concrete(array('baz' => 'quux'));
+        $obj = new HTML_Common2_Concrete(['baz' => 'quux']);
         $this->assertTrue(isset($obj['baz']));
         $this->assertEquals('quux', $obj['baz']);
 
