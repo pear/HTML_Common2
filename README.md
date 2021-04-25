@@ -17,7 +17,7 @@ Features:
    charset, linebreak and indentation characters;
  * Methods to handle indentation and HTML comments (useful in subclasses).
 
-Please report all issues via the [PEAR bug tracker].
+Please report all issues via the [PEAR bug tracker] or [Github issues].
 
 [End-user documentation](http://pear.php.net/manual/en/package.html.html-common2.php) as well as
 [generated API documentation](http://pear.php.net/package/HTML_Common2/docs/latest/) for current release is available
@@ -30,6 +30,7 @@ Pull requests are welcome.
 [PEAR HTML_QuickForm2]: http://pear.php.net/package/HTML_QuickForm2/
 [PEAR SVN]: https://svn.php.net/repository/pear/packages/HTML_Common2
 [PEAR bug tracker]: http://pear.php.net/bugs/search.php?cmd=display&package_name[]=HTML_Common2
+[Github issues]: https://github.com/pear/HTML_Common2/issues
 
 ## Testing, Packaging and Installing (Pear)
 
