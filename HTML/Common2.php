@@ -6,7 +6,7 @@
  *
  * LICENSE:
  *
- * Copyright (c) 2004-2019, Alexey Borzov <avb@php.net>
+ * Copyright (c) 2004-2021, Alexey Borzov <avb@php.net>
  *
  * All rights reserved.
  *
@@ -37,8 +37,8 @@
  * @category HTML
  * @package  HTML_Common2
  * @author   Alexey Borzov <avb@php.net>
- * @license  http://opensource.org/licenses/bsd-license.php New BSD License
- * @link     http://pear.php.net/package/HTML_Common2
+ * @license  https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
+ * @link     https://pear.php.net/package/HTML_Common2
  */
 
 /**
@@ -51,9 +51,9 @@
  * @category HTML
  * @package  HTML_Common2
  * @author   Alexey Borzov <avb@php.net>
- * @license  http://opensource.org/licenses/bsd-license.php New BSD License
+ * @license  https://opensource.org/licenses/bsd-license.php New BSD License
  * @version  Release: @package_version@
- * @link     http://pear.php.net/package/HTML_Common2
+ * @link     https://pear.php.net/package/HTML_Common2
  */
 abstract class HTML_Common2 implements ArrayAccess
 {
