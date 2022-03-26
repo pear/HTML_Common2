@@ -475,11 +475,12 @@ abstract class HTML_Common2 implements ArrayAccess
     public function addClass($class)
     {
         if (!is_array($class)) {
-            $class = preg_split('/\s+/', $class, null, PREG_SPLIT_NO_EMPTY);
+            $class = preg_split('/\s+/', $class, -1, PREG_SPLIT_NO_EMPTY);
         }
-        $curClass = preg_split(
-            '/\s+/', $this->getAttribute('class'), null, PREG_SPLIT_NO_EMPTY
-        );
+        $curClass = null !== ($classAttr = $this->getAttribute('class'))
+                    ? preg_split('/\s+/', $classAttr, -1, PREG_SPLIT_NO_EMPTY)
+                    : [];
+
         foreach ($class as $c) {
             if (!in_array($c, $curClass)) {
                 $curClass[] = $c;
@@ -501,15 +502,18 @@ abstract class HTML_Common2 implements ArrayAccess
     public function removeClass($class)
     {
         if (!is_array($class)) {
-            $class = preg_split('/\s+/', $class, null, PREG_SPLIT_NO_EMPTY);
+            $class = preg_split('/\s+/', $class, -1, PREG_SPLIT_NO_EMPTY);
         }
-        $curClass = array_diff(
-            preg_split(
-                '/\s+/', $this->getAttribute('class'), null, PREG_SPLIT_NO_EMPTY
-            ),
-            $class
-        );
-        if (0 == count($curClass)) {
+        if (null === ($classAttr = $this->getAttribute('class'))) {
+            $curClass = [];
+        } else {
+            $curClass = array_diff(
+                preg_split('/\s+/', $classAttr, -1, PREG_SPLIT_NO_EMPTY),
+                $class
+            );
+        }
+
+        if ([] === $curClass) {
             $this->removeAttribute('class');
         } else {
             $this->setAttribute('class', implode(' ', $curClass));
@@ -544,6 +548,7 @@ abstract class HTML_Common2 implements ArrayAccess
     {
     }
 
+    #[ReturnTypeWillChange]
     /**
      * Whether or not an offset (HTML attribute) exists
      *
@@ -557,6 +562,7 @@ abstract class HTML_Common2 implements ArrayAccess
         return isset($this->attributes[strtolower($offset)]);
     }
 
+    #[ReturnTypeWillChange]
     /**
      * Returns the value at specified offset (i.e. attribute name)
      *
@@ -571,6 +577,7 @@ abstract class HTML_Common2 implements ArrayAccess
         return $this->getAttribute($offset);
     }
 
+    #[ReturnTypeWillChange]
     /**
      * Assigns a value to the specified offset (i.e. attribute name)
      *
@@ -591,6 +598,7 @@ abstract class HTML_Common2 implements ArrayAccess
         }
     }
 
+    #[ReturnTypeWillChange]
     /**
      * Unsets an offset (i.e. removes an attribute)
      *
