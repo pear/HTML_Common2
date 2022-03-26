@@ -41,71 +41,15 @@
  * @link       https://pear.php.net/package/HTML_Common2
  */
 
-if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
-    require_once dirname(__DIR__) . '/vendor/autoload.php';
-}
+/** Sets up includes */
+require_once __DIR__ . '/TestHelper.php';
 
-if (!class_exists('HTML_Common2', true)) {
-    if ('@' . 'package_version@' == '@package_version@') {
-        // If running from SVN checkout, do a relative include
-        require_once dirname(__DIR__) . '/HTML/Common2.php';
-    } else {
-        // If installed, use include_path
-        require_once 'HTML/Common2.php';
-    }
-}
-
-
-/**
- * A non-abstract subclass of HTML_Common2
- *
- * HTML_Common2 cannot be instantiated due to abstract __toString() method,
- * we need to (sort of) implement that.
- */
-class HTML_Common2_Concrete extends HTML_Common2
-{
-    public function __toString()
-    {
-        return '';
-    }
-}
-
-/**
- * A subclass to test the 'watched attributes' functionality of HTML_Common2
- *
- * Two attributes are watched here: 'readonly' and 'uppercase'. The former
- * should not be changed by any of the methods and the value of the latter
- * should always be uppercase. This is achieved by implementing the
- * onAttributeChange() method defined in HTML_Common2
- */
-class HTML_Common2_WatchedAttributes extends HTML_Common2_Concrete
-{
-    protected $watchedAttributes = ['readonly', 'uppercase'];
-
-    protected $attributes = [
-        'readonly'  => 'this attribute is readonly',
-        'uppercase' => 'VALUE OF THIS IS ALWAYS UPPERCASE'
-    ];
-
-    protected function onAttributeChange($name, $value = null)
-    {
-        if ('readonly' == $name) {
-            return;
-        }
-        if ('uppercase' == $name) {
-            if (null === $value) {
-                unset($this->attributes[$name]);
-            } else {
-                $this->attributes[$name] = strtoupper($value);
-            }
-        }
-    }
-}
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 /**
  * Unit test for HTML_Common2 class
  */
-class HTML_Common2_Test extends PHPUnit_Framework_TestCase
+class HTML_Common2_Test extends TestCase
 {
     public function testUnknownOptionIsNull()
     {
@@ -130,21 +74,21 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
 
     public function testConstructorSetsDefaultAttributes()
     {
-        $obj = new HTML_Common2_Concrete();
+        $obj = new Common2Impl();
         $this->assertEquals([], $obj->getAttributes());
-        $obj = new HTML_Common2_Concrete(['foo' => 'bar']);
+        $obj = new Common2Impl(['foo' => 'bar']);
         $this->assertEquals(['foo' => 'bar'], $obj->getAttributes());
     }
 
     public function testUnknownAttributeIsNull()
     {
-        $obj = new HTML_Common2_Concrete();
+        $obj = new Common2Impl();
         $this->assertNull($obj->getAttribute('foobar'));
     }
 
     public function testAttributeNamesAreLowercased()
     {
-        $obj = new HTML_Common2_Concrete();
+        $obj = new Common2Impl();
         $obj->setAttributes(['BAZ' => 'quux']);
         $obj->setAttribute('Foo', 'bar');
         $obj->mergeAttributes(['XyZZy' => 'xyzzy value']);
@@ -160,24 +104,24 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
 
     public function testAttributeValuesAreStrings()
     {
-        $obj = new HTML_Common2_Concrete();
+        $obj = new Common2Impl();
         $obj->setAttributes(['foo' => null, 'bar' => 10]);
         $obj->setAttribute('baz', 2.5);
         $obj->mergeAttributes(['foobar' => 42]);
         foreach ($obj->getAttributes() as $attribute) {
-            $this->assertInternalType('string', $attribute);
+            $this->assertIsString($attribute);
         }
     }
 
     public function testDefaultIndentLevelIsZero()
     {
-        $obj = new HTML_Common2_Concrete();
+        $obj = new Common2Impl();
         $this->assertEquals(0, $obj->getIndentLevel());
     }
 
     public function testIndentLevelIsNonnegative()
     {
-        $obj = new HTML_Common2_Concrete();
+        $obj = new Common2Impl();
         $obj->setIndentLevel(-1);
         $this->assertEquals(0, $obj->getIndentLevel());
         $obj->setIndentLevel(1);
@@ -186,13 +130,13 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
 
     public function testDefaultCommentIsNull()
     {
-        $obj = new HTML_Common2_Concrete();
+        $obj = new Common2Impl();
         $this->assertNull($obj->getComment());
     }
 
     public function testAttributesAsStringAccepted()
     {
-        $obj = new HTML_Common2_Concrete('multiple  style= "height: 2em;" class=\'foo\' width=100% ');
+        $obj = new Common2Impl('multiple  style= "height: 2em;" class=\'foo\' width=100% ');
         $this->assertEquals(
             ['multiple' => 'multiple', 'style' => 'height: 2em;',
                   'class' => 'foo', 'width' => '100%'],
@@ -202,7 +146,7 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
 
     public function testNonXhtmlAttributesTransformed()
     {
-        $obj = new HTML_Common2_Concrete(['multiple']);
+        $obj = new Common2Impl(['multiple']);
         $obj->setAttribute('selected');
         $obj->mergeAttributes('checked nowrap');
         $this->assertEquals(
@@ -214,7 +158,7 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
 
     public function testWellFormedXhtmlGenerated()
     {
-        $obj = new HTML_Common2_Concrete(['foo' => 'bar&"baz"', 'quux' => 'xyz\'zy']);
+        $obj = new Common2Impl(['foo' => 'bar&"baz"', 'quux' => 'xyz\'zy']);
         $this->assertEquals(
             ' foo="bar&amp;&quot;baz&quot;" quux="xyz&#039;zy"',
             $obj->getAttributes(true)
@@ -223,7 +167,7 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
 
     public function testCanWatchAttributes()
     {
-        $obj = new HTML_Common2_WatchedAttributes();
+        $obj = new WatchedAttributes();
 
         $obj->setAttributes(['readonly' => 'something', 'uppercase' => 'new value', 'foo' => 'bar']);
         $this->assertEquals(
@@ -256,7 +200,7 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
 
     public function testFluentInterfaces()
     {
-        $obj = new HTML_Common2_Concrete();
+        $obj = new Common2Impl();
 
         $this->assertSame($obj, $obj->setAttributes(['foo' => 'foo value']));
         $this->assertSame($obj, $obj->mergeAttributes(['bar' => 'bar value']));
@@ -268,7 +212,7 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
 
     public function testCanAddCssClasses()
     {
-        $obj = new HTML_Common2_Concrete();
+        $obj = new Common2Impl();
 
         $obj->addClass('foobar');
         $obj->addClass('foobar');
@@ -286,7 +230,7 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
 
     public function testCanRemoveCssClasses()
     {
-        $obj = new HTML_Common2_Concrete(['class' => 'foobar quux xyzzy']);
+        $obj = new Common2Impl(['class' => 'foobar quux xyzzy']);
 
         $obj->removeClass('foobar xyzzy');
         $this->assertFalse($obj->hasClass('xyzzy'));
@@ -299,7 +243,7 @@ class HTML_Common2_Test extends PHPUnit_Framework_TestCase
 
     public function testArrayAccess()
     {
-        $obj = new HTML_Common2_Concrete(['baz' => 'quux']);
+        $obj = new Common2Impl(['baz' => 'quux']);
         $this->assertTrue(isset($obj['baz']));
         $this->assertEquals('quux', $obj['baz']);
 

@@ -6,7 +6,7 @@
  *
  * LICENSE:
  *
- * Copyright (c) 2004-2021, Alexey Borzov <avb@php.net>
+ * Copyright (c) 2004-2022, Alexey Borzov <avb@php.net>
  *
  * All rights reserved.
  *
@@ -41,32 +41,21 @@
  * @link       https://pear.php.net/package/HTML_Common2
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    if (strpos($_SERVER['argv'][0], 'phpunit') === false) {
-        define('PHPUnit_MAIN_METHOD', 'HTML_Common2_AllTests::main');
+if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
+    require_once dirname(__DIR__) . '/vendor/autoload.php';
+}
+
+if (!class_exists('HTML_Common2', true)) {
+    if ('@' . 'package_version@' == '@package_version@') {
+        // If running from SVN checkout, do a relative include
+        require_once dirname(__DIR__) . '/HTML/Common2.php';
     } else {
-        define('PHPUnit_MAIN_METHOD', false);
-    }
-}
-
-require_once dirname(__FILE__) . '/HTML_Common2_Test.php';
-
-class HTML_Common2_AllTests
-{
-    public static function main()
-    {
-        PHPUnit_TextUI_TestRunner::run(self::suite());
+        // If installed, use include_path
+        require_once 'HTML/Common2.php';
     }
 
-    public static function suite()
-    {
-        $suite = new PHPUnit_Framework_TestSuite('HTML_Common2 package');
-        $suite->addTestSuite('HTML_Common2_Test');
-        return $suite;
-    }
+    require_once __DIR__ . '/stubs/Common2Impl.php';
+    require_once __DIR__ . '/stubs/WatchedAttributes.php';
 }
 
-if (PHPUnit_MAIN_METHOD == 'HTML_Common2_AllTests::main') {
-    HTML_Common2_AllTests::main();
-}
 ?>

@@ -49,10 +49,18 @@ HTML_Common2 package provides methods for HTML code display and attributes handl
         <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <dir name="tests">
+        <dir name="stubs">
+          <file role="test" name="Common2Impl.php">
+            <tasks:replace from="@package_version@" to="version" type="package-info" />
+          </file>
+          <file role="test" name="WatchedAttributes.php">
+            <tasks:replace from="@package_version@" to="version" type="package-info" />
+          </file>
+        </dir>
         <file role="test" name="HTML_Common2_Test.php">
           <tasks:replace from="@package_version@" to="version" type="package-info" />
         </file>
-        <file role="test" name="AllTests.php" />
+        <file role="test" name="TestHelper.php" />
       </dir>
     </dir>
   </contents>
@@ -69,7 +77,9 @@ HTML_Common2 package provides methods for HTML code display and attributes handl
   <phprelease>
    <filelist>
     <install as="HTML_Common2_Test.php" name="tests/HTML_Common2_Test.php" />
-    <install as="AllTests.php" name="tests/AllTests.php" />
+    <install as="TestHelper.php" name="tests/TestHelper.php" />
+    <install as="stubs/Common2Impl.php" name="tests/stubs/Common2Impl.php" />
+    <install as="stubs/WatchedAttributes.php" name="tests/stubs/WatchedAttributes.php" />
    </filelist>
   </phprelease>
   <changelog>
