@@ -1,6 +1,6 @@
 # HTML_Common2
 
-[![Build Status](https://travis-ci.org/pear/HTML_Common2.svg?branch=trunk)](https://travis-ci.org/pear/HTML_Common2)
+[![Build Status](https://github.com/pear/HTML_Common2/workflows/Continuous%20Integration/badge.svg?branch=trunk)](https://github.com/pear/HTML_Common2/actions?query=branch%3Atrunk+workflow%3A%22Continuous+Integration%22)
 
 This is a repository for [PEAR HTML_Common2] package that has been migrated from [PEAR SVN].
 
