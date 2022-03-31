@@ -1,5 +1,11 @@
 # Changes in HTML_Common2
 
+## 2.3.1 - 2022-03-31
+
+This release is mostly needed for running [psalm] on HTML_QuickForm2 package 
+* Type hints fixed to better reflect reality
+* CS fixes, minor changes to `parseAttributes()` method
+
 ## 2.3.0 - 2022-03-26
 
 * Upgraded tests, [PHPUnit Polyfills package] is used to run them on PHP 5.6 to PHP 8.1
@@ -9,3 +15,4 @@
 
 [PHPUnit Polyfills package]: https://github.com/Yoast/PHPUnit-Polyfills
 [issue #3]: https://github.com/pear/HTML_Common2/issues/3
+[psalm]: https://psalm.dev/

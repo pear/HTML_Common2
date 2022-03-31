@@ -27,9 +27,9 @@ HTML_Common2 package provides methods for HTML code display and attributes handl
     <email>thesaur@php.net</email>
     <active>no</active>
   </lead>
-  <date>2022-03-26</date>
+  <date>2022-03-31</date>
   <version>
-    <release>2.3.0</release>
+    <release>2.3.1</release>
     <api>2.1.0</api>
   </version>
   <stability>
@@ -38,10 +38,9 @@ HTML_Common2 package provides methods for HTML code display and attributes handl
   </stability>
   <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD License</license>
   <notes>
-* Upgraded tests, PHPUnit-Polyfills is used to run them on PHP 5.6 to PHP 8.1
-* Test suite now runs on Github Actions rather than on Travis
-* The package runs under PHP 8.1 without E_DEPRECATED messages
-* Minimum required PHP version is now 5.6
+This release is mostly needed for running psalm on HTML_QuickForm2 package
+* Type hints fixed to better reflect reality
+* CS fixes, minor changes to parseAttributes() method
   </notes>
   <contents>
     <dir name="/">
@@ -83,6 +82,24 @@ HTML_Common2 package provides methods for HTML code display and attributes handl
    </filelist>
   </phprelease>
   <changelog>
+   <release>
+    <date>2022-03-26</date>
+    <version>
+     <release>2.3.0</release>
+     <api>2.1.0</api>
+    </version>
+    <stability>
+     <release>stable</release>
+     <api>stable</api>
+    </stability>
+    <license uri="https://opensource.org/licenses/BSD-3-Clause">BSD License</license>
+    <notes>
+* Upgraded tests, PHPUnit-Polyfills is used to run them on PHP 5.6 to PHP 8.1
+* Test suite now runs on Github Actions rather than on Travis
+* The package runs under PHP 8.1 without E_DEPRECATED messages
+* Minimum required PHP version is now 5.6
+    </notes>
+   </release>
    <release>
     <date>2021-04-25</date>
     <version>
