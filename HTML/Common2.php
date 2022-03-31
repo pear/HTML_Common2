@@ -48,12 +48,12 @@
  * attribute strings. Port of HTML_Common class for PHP4 originally written by
  * Adam Daniel with contributions from numerous other developers.
  *
- * @category HTML
- * @package  HTML_Common2
- * @author   Alexey Borzov <avb@php.net>
- * @license  https://opensource.org/licenses/bsd-license.php New BSD License
- * @version  Release: @package_version@
- * @link     https://pear.php.net/package/HTML_Common2
+ * @category   HTML
+ * @package    HTML_Common2
+ * @author     Alexey Borzov <avb@php.net>
+ * @license    https://opensource.org/licenses/bsd-license.php New BSD License
+ * @version    Release: @package_version@
+ * @link       https://pear.php.net/package/HTML_Common2
  * @implements ArrayAccess<string, string>
  */
 abstract class HTML_Common2 implements ArrayAccess
@@ -90,6 +90,7 @@ abstract class HTML_Common2 implements ArrayAccess
 
     /**
      * Associative array of attributes
+     *
      * @var array<string,string>
      */
     protected $attributes = [];
@@ -97,6 +98,7 @@ abstract class HTML_Common2 implements ArrayAccess
     /**
      * Changes to attributes in this list will be announced via onAttributeChange()
      * method rather than performed by HTML_Common2 class itself
+     *
      * @var string[]
      * @see onAttributeChange()
      */
@@ -104,12 +106,14 @@ abstract class HTML_Common2 implements ArrayAccess
 
     /**
      * Indentation level of the element
+     *
      * @var int
      */
     private $_indentLevel = 0;
 
     /**
      * Comment associated with the element
+     *
      * @var string|null
      */
     private $_comment = null;
@@ -145,8 +149,12 @@ abstract class HTML_Common2 implements ArrayAccess
     /**
      * Sets global option(s)
      *
-     * @param string|array $nameOrOptions Option name or array ('option name' => 'option value')
-     * @param mixed        $value         Option value, if first argument is not an array
+     * @param string|array $nameOrOptions Option name or array
+     *                                    ('option name' => 'option value')
+     * @param mixed        $value         Option value,
+     *                                    if first argument is not an array
+     *
+     * @return void
      */
     public static function setOption($nameOrOptions, $value = null)
     {
@@ -155,7 +163,9 @@ abstract class HTML_Common2 implements ArrayAccess
                 self::setOption($k, $v);
             }
         } else {
-            if (self::OPTION_LINEBREAK === $nameOrOptions && isset(self::$_linebreaks[$value])) {
+            if (self::OPTION_LINEBREAK === $nameOrOptions
+                && isset(self::$_linebreaks[$value])
+            ) {
                 $value = self::$_linebreaks[$value];
             }
             self::$_options[$nameOrOptions] = $value;
@@ -189,24 +199,24 @@ abstract class HTML_Common2 implements ArrayAccess
     protected static function parseAttributes($attrString)
     {
         $attributes = [];
-        if (preg_match_all(
-            "/(([A-Za-z_:]|[^\\x00-\\x7F])([A-Za-z0-9_:.-]|[^\\x00-\\x7F])*)" .
-            "([ \\n\\t\\r]+)?(=([ \\n\\t\\r]+)?(\"[^\"]*\"|'[^']*'|[^ \\n\\t\\r]*))?/",
+        $matchCount = preg_match_all(
+            "/(([A-Za-z_:]|[^\\x00-\\x7F])([A-Za-z0-9_:.-]|[^\\x00-\\x7F])*)"
+            . "([ \\n\\t\\r]+)?"
+            . "(=([ \\n\\t\\r]+)?(\"[^\"]*\"|'[^']*'|[^ \\n\\t\\r]*))?/",
             $attrString,
             $regs
-        )) {
-            for ($i = 0; $i < count($regs[1]); $i++) {
-                $name  = trim($regs[1][$i]);
-                $check = trim($regs[0][$i]);
-                $value = trim($regs[7][$i]);
-                if ($name == $check) {
-                    $attributes[strtolower($name)] = strtolower($name);
-                } else {
-                    if (!empty($value) && ($value[0] == '\'' || $value[0] == '"')) {
-                        $value = substr($value, 1, -1);
-                    }
-                    $attributes[strtolower($name)] = $value;
+        );
+        for ($i = 0; $i < (int)$matchCount; $i++) {
+            $name  = trim($regs[1][$i]);
+            $check = trim($regs[0][$i]);
+            $value = trim($regs[7][$i]);
+            if ($name === $check) {
+                $attributes[strtolower($name)] = strtolower($name);
+            } else {
+                if (!empty($value) && ($value[0] === '\'' || $value[0] === '"')) {
+                    $value = substr($value, 1, -1);
                 }
+                $attributes[strtolower($name)] = $value;
             }
         }
         return $attributes;
@@ -242,7 +252,9 @@ abstract class HTML_Common2 implements ArrayAccess
      * Removes an attribute from an attribute array
      *
      * @param array  $attributes Attribute array
-     * @param string $name        Name of attribute to remove
+     * @param string $name       Name of attribute to remove
+     *
+     * @return void
      */
     protected static function removeAttributeArray(array &$attributes, $name)
     {
@@ -261,7 +273,8 @@ abstract class HTML_Common2 implements ArrayAccess
         $str     = '';
         $charset = self::getOption(self::OPTION_CHARSET);
         foreach ($attributes as $key => $value) {
-            $str .= ' ' . $key . '="' . htmlspecialchars($value, ENT_QUOTES, $charset) . '"';
+            $str .= ' ' . $key . '="'
+                    . htmlspecialchars($value, ENT_QUOTES, $charset) . '"';
         }
         return $str;
     }
@@ -315,7 +328,7 @@ abstract class HTML_Common2 implements ArrayAccess
     /**
      * Sets the attributes
      *
-     * @param string|array|null $attributes Array of attribute 'name' => 'value' pairs
+     * @param string|array|null $attributes Array of 'name' => 'value' pairs
      *                                      or HTML attribute string
      *
      * @return $this
@@ -344,7 +357,7 @@ abstract class HTML_Common2 implements ArrayAccess
      *
      * @param bool $asString Whether to return attributes as string
      *
-     * @return array|string
+     * @return       array|string
      * @psalm-return ($asString is true ? string : array<string, string>)
      */
     public function getAttributes($asString = false)
@@ -359,7 +372,7 @@ abstract class HTML_Common2 implements ArrayAccess
     /**
      * Merges the existing attributes with the new ones
      *
-     * @param array|string|null $attributes Array of attribute 'name' => 'value' pairs
+     * @param array|string|null $attributes Array of 'name' => 'value' pairs
      *                                      or HTML attribute string
      *
      * @return $this
@@ -427,7 +440,10 @@ abstract class HTML_Common2 implements ArrayAccess
      */
     protected function getIndent()
     {
-        return str_repeat(self::getOption(self::OPTION_INDENT), $this->getIndentLevel());
+        return str_repeat(
+            self::getOption(self::OPTION_INDENT),
+            $this->getIndentLevel()
+        );
     }
 
     /**
@@ -545,6 +561,8 @@ abstract class HTML_Common2 implements ArrayAccess
      *
      * @param string      $name  Attribute name
      * @param string|null $value Attribute value, null if attribute is being removed
+     *
+     * @return void
      */
     protected function onAttributeChange($name, $value = null)
     {
@@ -557,7 +575,7 @@ abstract class HTML_Common2 implements ArrayAccess
      * @param string $offset An offset to check for.
      *
      * @return boolean Returns true on success or false on failure.
-     * @link http://php.net/manual/en/arrayaccess.offsetexists.php
+     * @link   http://php.net/manual/en/arrayaccess.offsetexists.php
      */
     public function offsetExists($offset)
     {
@@ -571,8 +589,8 @@ abstract class HTML_Common2 implements ArrayAccess
      * @param string $offset The offset to retrieve.
      *
      * @return string|null
-     * @link http://php.net/manual/en/arrayaccess.offsetget.php
-     * @see getAttribute()
+     * @link   http://php.net/manual/en/arrayaccess.offsetget.php
+     * @see    getAttribute()
      */
     public function offsetGet($offset)
     {
@@ -587,8 +605,8 @@ abstract class HTML_Common2 implements ArrayAccess
      * @param string $value  The value to set
      *
      * @return void
-     * @link http://php.net/manual/en/arrayaccess.offsetset.php
-     * @see setAttribute()
+     * @link   http://php.net/manual/en/arrayaccess.offsetset.php
+     * @see    setAttribute()
      */
     public function offsetSet($offset, $value)
     {
@@ -607,8 +625,8 @@ abstract class HTML_Common2 implements ArrayAccess
      * @param string $offset The offset to unset
      *
      * @return void
-     * @link http://php.net/manual/en/arrayaccess.offsetunset.php
-     * @see removeAttribute()
+     * @link   http://php.net/manual/en/arrayaccess.offsetunset.php
+     * @see    removeAttribute()
      */
     public function offsetUnset($offset)
     {
