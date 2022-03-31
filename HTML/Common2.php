@@ -54,6 +54,7 @@
  * @license  https://opensource.org/licenses/bsd-license.php New BSD License
  * @version  Release: @package_version@
  * @link     https://pear.php.net/package/HTML_Common2
+ * @implements ArrayAccess<string, string>
  */
 abstract class HTML_Common2 implements ArrayAccess
 {
@@ -89,14 +90,14 @@ abstract class HTML_Common2 implements ArrayAccess
 
     /**
      * Associative array of attributes
-     * @var array
+     * @var array<string,string>
      */
     protected $attributes = [];
 
     /**
      * Changes to attributes in this list will be announced via onAttributeChange()
      * method rather than performed by HTML_Common2 class itself
-     * @var array
+     * @var string[]
      * @see onAttributeChange()
      */
     protected $watchedAttributes = [];
@@ -109,7 +110,7 @@ abstract class HTML_Common2 implements ArrayAccess
 
     /**
      * Comment associated with the element
-     * @var string
+     * @var string|null
      */
     private $_comment = null;
 
@@ -240,7 +241,7 @@ abstract class HTML_Common2 implements ArrayAccess
     /**
      * Removes an attribute from an attribute array
      *
-     * @param array  &$attributes Attribute array
+     * @param array  $attributes Attribute array
      * @param string $name        Name of attribute to remove
      */
     protected static function removeAttributeArray(array &$attributes, $name)
@@ -314,8 +315,8 @@ abstract class HTML_Common2 implements ArrayAccess
     /**
      * Sets the attributes
      *
-     * @param string|array $attributes Array of attribute 'name' => 'value' pairs
-     *                                 or HTML attribute string
+     * @param string|array|null $attributes Array of attribute 'name' => 'value' pairs
+     *                                      or HTML attribute string
      *
      * @return $this
      */
@@ -344,6 +345,7 @@ abstract class HTML_Common2 implements ArrayAccess
      * @param bool $asString Whether to return attributes as string
      *
      * @return array|string
+     * @psalm-return ($asString is true ? string : array<string, string>)
      */
     public function getAttributes($asString = false)
     {
@@ -357,8 +359,8 @@ abstract class HTML_Common2 implements ArrayAccess
     /**
      * Merges the existing attributes with the new ones
      *
-     * @param array|string $attributes Array of attribute 'name' => 'value' pairs
-     *                                 or HTML attribute string
+     * @param array|string|null $attributes Array of attribute 'name' => 'value' pairs
+     *                                      or HTML attribute string
      *
      * @return $this
      */
@@ -431,7 +433,7 @@ abstract class HTML_Common2 implements ArrayAccess
     /**
      * Sets the comment for the element
      *
-     * @param string $comment String to output as HTML comment
+     * @param string|null $comment String to output as HTML comment
      *
      * @return $this
      */
@@ -444,7 +446,7 @@ abstract class HTML_Common2 implements ArrayAccess
     /**
      * Returns the comment associated with the element
      *
-     * @return string
+     * @return string|null
      */
     public function getComment()
     {
@@ -541,8 +543,8 @@ abstract class HTML_Common2 implements ArrayAccess
      * this method, it is the responsibility of this method to change or remove
      * (or not) the attribute.
      *
-     * @param string $name  Attribute name
-     * @param string $value Attribute value, null if attribute is being removed
+     * @param string      $name  Attribute name
+     * @param string|null $value Attribute value, null if attribute is being removed
      */
     protected function onAttributeChange($name, $value = null)
     {
